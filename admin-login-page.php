@@ -14,20 +14,31 @@
 // Include Statements to easily call files
 include 'mysql-connection.php';
 
+//Start Session
 session_start();
-
-$sql = "SELECT * FROM userdetails WHERE strUserName='$username'";
+//Check what accountType the user is
+$strUserName = $_SESSION['strUserName'];
+$sql = "SELECT * FROM userdetails WHERE strUserName='$strUserName'";
 $result = $conn->query($sql);
-$row = $result->fetch_assoc()
-$intUserID = $_SESSION["intUserID"];
 
-if ()
+if($strUserName != null){
+	while($row = $result->fetch_assoc()){
+		if($row["strAccountType"] == 'admin'){
+			break;
+		} else if($row["strAccountType"] == 'teacher'){
+			header("Location: /teacher-login-page.php");
+			break;
+		} else if($row["strAccountType"] == 'student'){
+			header("Location: /student-login-page.php");
+			break;
+		} else {
+			header("Location: /index.php");
+		}
+	}
+} else {
+	header("Location: /index.php");
+}
 
-//Get intUserID
-//Get the strAccountType of the intUserID
-//if it equals 'admin' -- do nothing
-//else
-//redirect to correct page using code from index.php
 
 //Function for creating the code associated with signing up
 function generateCode(){
@@ -65,6 +76,7 @@ function generateCode(){
 	}
 }
 
+//Check if the generate code button has been pressed
 if($_GET){
     if(isset($_GET['gencode'])){
         generateCode();
@@ -73,6 +85,7 @@ if($_GET){
 		exit();
     }
 }
+
 ?>
 
 <html>
@@ -158,6 +171,7 @@ if($_GET){
 		border-top-left-radius: 0px;
 		background-color: rgba(96, 96, 96, 1.00);
 		border: 1px solid black;
+		margin-top: -10px;
 	}
 	
 	.generate-code-button p {
@@ -201,12 +215,12 @@ if($_GET){
 				<a class="navbar-brand" href="admin-login-page.php"><span style="color: white">Resources</span><span style="color: white">2</span><span style="color: rgba(82, 82, 255, 1.0);">Go</span></a>
 			</div>
 			<ul class="nav navbar-nav pull-right">
-				<li class="active"><a href="#">Home</a></li>
-				<li><a href="#">Create Quiz</a></li>
-				<li><a href="#">Create User</a></li>
-				<li><a href="#">Delete User</a></li>
-				<li><a href="#">Edit User</a></li>
-				<li><a href="#">Sign Out</a></li>
+				<li class="active"><a href="admin-login-page.php">Home</a></li>
+				<li><a onMouseOver="this.style.color='#BDC3C7'" onMouseOut="this.style.color='white'" style="color: white" href="create-quiz.php">Create Quiz</a></li>
+				<li><a onMouseOver="this.style.color='#BDC3C7'" onMouseOut="this.style.color='white'" style="color: white" href="#">Create User</a></li>
+				<li><a onMouseOver="this.style.color='#BDC3C7'" onMouseOut="this.style.color='white'" style="color: white" href="#">Delete User</a></li>
+				<li><a onMouseOver="this.style.color='#BDC3C7'" onMouseOut="this.style.color='white'" style="color: white" href="#">Edit User</a></li>
+				<li><a onMouseOver="this.style.color='#BDC3C7'" onMouseOut="this.style.color='white'" style="color: white" href="logOutScript.php">Sign Out</a></li>
 			</ul>
 		</div>
 	</nav>
@@ -230,42 +244,6 @@ if($_GET){
 			?></p>
 	</form>
 </div>
-
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
 
 <footer>
 	<div class="bottom-text">

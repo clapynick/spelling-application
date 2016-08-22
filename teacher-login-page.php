@@ -13,6 +13,79 @@
 
 // Include Statements to easily call files
 include 'mysql-connection.php';
+
+//Start Session
+session_start();
+
+//Check what accountType the user is
+$strUserName = $_SESSION['strUserName'];
+$sql = "SELECT * FROM userdetails WHERE strUserName='$strUserName'";
+$result = $conn->query($sql);
+
+if($strUserName != null){
+	while($row = $result->fetch_assoc()){
+		if($row["strAccountType"] == 'admin'){
+			header("Location: /admin-login-page.php");
+			break;
+		} else if($row["strAccountType"] == 'teacher'){
+			break;
+		} else if($row["strAccountType"] == 'student'){
+			header("Location: /student-login-page.php");
+			break;
+		} else {
+			header("Location: /index.php");
+		}
+	}
+} else {
+	header("Location: /index.php");
+}
+
+
+//Function for creating the code associated with signing up
+function generateCode(){
+	include 'mysql-connection.php';
+	
+	//Define Variables
+	$sql = "SELECT * FROM codegen";
+	$result = $conn->query($sql);
+	$row = mysqli_fetch_assoc($result);
+	$numberA = rand(100000, 999999);
+	echo("$numberA : Current numberA <br />");
+	$numberB = $row['intGenCode'];
+	echo($numberB);
+	echo " : Current numberB <br />";
+
+	while($numberA == $numberB){
+		$numberA = rand(100000, 999999);
+		echo("$numberA : New Selected numberA");
+	} 
+	
+	if($numberA != $numberB){
+		$sql2 = "DELETE FROM codegen WHERE intGenCode";
+		if ($conn->query($sql2) === TRUE) {
+			echo "<br /> Record deleted successfully <br />";
+		} else {
+			echo "<br /> Error deleting record <br />";
+		}
+		
+		$sql3 = "INSERT INTO codegen VALUES ('$numberA')";
+		if ($conn->query($sql3) === TRUE) {
+			echo "New record created successfully <br />";
+		} else {
+			echo "Error: Could not put data in the database <br />";
+		}
+	}
+}
+
+//Check if the generate code button has been pressed
+if($_GET){
+    if(isset($_GET['gencode'])){
+        generateCode();
+		header("Location: /teacher-login-page.php");
+		exit();
+    }
+}
+
 ?>
 
 <html>
@@ -78,16 +151,47 @@ include 'mysql-connection.php';
 		text-align: center;
 	}
 	
-	/* Home Button Customisation */
-	.home-button img {
-		border: 0px solid red;
-		margin-left: 1435px;
-		margin-top: -42px;
+	/* Main Tabs Config */
+	.main-tabs ul {
 	}
 	
-	.home-button img:hover {
-		opacity: 0.7;
+	.tabs-area {
+		background-color: rgba(96, 96, 96, 	1.00);
+		border-radius: 0px;
 	}
+	
+	/* Generate Code Button and Text Area */
+	.generate-code-button > form > input {
+		font-size: 15px;
+		color: white;
+		height: 40px;
+		border-top-right-radius: 10px;
+		border-bottom-right-radius: 10px;
+		border-bottom-left-radius: 0px;
+		border-top-left-radius: 0px;
+		background-color: rgba(96, 96, 96, 1.00);
+		border: 1px solid black;
+		margin-top: -10px;
+	}
+	
+	.generate-code-button p {
+		border: 1px solid black;
+		height: 40px;
+		width: 130px;
+		border-top-right-radius: 10px;
+		border-bottom-right-radius: 10px;
+		border-bottom-left-radius: 0px;
+		border-top-left-radius: 5px;
+		background-color: rgba(100, 206, 206, 1.00);
+		color: white;
+		font-size: 17px;
+		padding-top: 7px;
+		margin-left: 170px;
+		margin-top: -40px;
+		padding-left: 10px;
+	}
+	
+	
 	
 </style>
 
@@ -102,8 +206,40 @@ include 'mysql-connection.php';
 	</div>
 </center>
 
-<div class="home-button">
-	<a href="index.php" title="Home Page"><img src="images/icons/home-icon.png" alt="Home Icon" height="50" width="50"></a>
+<div class="main-class">
+<br />
+<br />
+	<nav class="tabs-area navbar navbar-inverse navbar-justified">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<a class="navbar-brand" href="admin-login-page.php"><span style="color: white">Resources</span><span style="color: white">2</span><span style="color: rgba(82, 82, 255, 1.0);">Go</span></a>
+			</div>
+			<ul class="nav navbar-nav pull-right">
+				<li class="active"><a href="teacher-login-page.php">Home</a></li>
+				<li><a onMouseOver="this.style.color='#BDC3C7'" onMouseOut="this.style.color='white'" style="color: white" href="create-quiz.php">Create Quiz</a></li>
+				<li><a onMouseOver="this.style.color='#BDC3C7'" onMouseOut="this.style.color='white'" style="color: white" href="logOutScript.php">Sign Out</a></li>
+			</ul>
+		</div>
+	</nav>
+</div>
+
+<div class="generate-code-button">
+	<form>
+		<input type="submit" name="gencode" class="btn btn-lg btn-default" value="Generate New Code"/>
+		<p><?PHP 
+			$sql = "SELECT * FROM codegen";
+			$result = $conn->query($sql);
+			if ($result->num_rows > 0) {
+				// output data of each row
+				while($row = $result->fetch_assoc()) {
+					echo "Code: " . $row["intGenCode"] . "<br>";
+				}
+			} else {
+				echo "";
+			}
+			$numberC = $row;
+			?></p>
+	</form>
 </div>
 
 <footer>

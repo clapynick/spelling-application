@@ -13,6 +13,31 @@
 
 // Include Statements to easily call files
 include 'mysql-connection.php';
+
+//Start Session
+session_start();
+//Check what accountType the user is
+$strUserName = $_SESSION['strUserName'];
+$sql = "SELECT * FROM userdetails WHERE strUserName='$strUserName'";
+$result = $conn->query($sql);
+
+if($strUserName != null){
+	while($row = $result->fetch_assoc()){
+		if($row["strAccountType"] == 'admin'){
+			header("Location: /admin-login-page.php");
+		} else if($row["strAccountType"] == 'teacher'){
+			header("Location: /teacher-login-page.php");
+			break;
+		} else if($row["strAccountType"] == 'student'){
+			break;
+		} else {
+			header("Location: /index.php");
+		}
+	}
+} else {
+	header("Location: /index.php");
+}
+
 ?>
 
 <html>

@@ -28,6 +28,8 @@ function checkDetails($conn) {
 	$result = $conn->query($sql);
 	//loggedIn variable to be false because no one is logged in currently.
 	$loggedIn = false;
+	$error = false;
+	$error_text = "";
 	
 	if ($result->num_rows > 0) {
 		// output data of each row
@@ -39,10 +41,10 @@ function checkDetails($conn) {
 				$loggedIn = true;
 				echo "Logging in successful.";
 				//Set of if statements to check the accountType of the user
-				$intUserID = $row['intUserID'];
-				$sql = "SELECT * FROM userquizzes WHERE intUserID='$intUserID'";
+				$strUserName = $row['strUserName'];
+				$sql = "SELECT * FROM userdetails WHERE strUserName='$username'";
 				$result = $conn->query($sql);
-				$_SESSION['intUserID'] = $result;
+				$_SESSION['strUserName'] = $strUserName;
 				if ($row['strAccountType'] == 'student'){
 					header("Location: /student-login-page.php");
 				} else {
@@ -60,12 +62,23 @@ function checkDetails($conn) {
 				break;
 			}else{
 				//Username was not found in the database but suggest them to sign up.
-				echo "Wrong username or password, please try again or sign up.";
+				//echo "Wrong username or password, please try again or sign up.";
+				$error = true;
+				$error_text = "Error: Wrong username or password, please try again or sign up.";
 			}
 		}
 	} else {
 		//Username was found but password was incorrect.
-		echo "Wrong username or password, please try again.";
+		//echo "Wrong username or password, please try again or sign up.";
+		$error = true;
+		$error_text = "Error: Wrong username or password, please try again or sign up.";
+	}
+	$_SESSION['error'] = $error;
+	if ($error == true){
+		$_SESSION['error_text'] = $error_text;
+	} else {
+		$error_text = "";
+		$_SESSION['error_text'] = $error_text;
 	}
 }
 
@@ -248,6 +261,15 @@ if(isset($_POST['submit'])){
 		font-size: 14px;
 	}
 	
+	/* Error Code Formatting */
+	.container .error-code {
+		border: 0px solid black;
+		color: darkred;
+		font-size: 18px;
+		font-weight: bold;
+		text-align: center;
+	}
+	
 	
 </style>
 
@@ -266,11 +288,24 @@ if(isset($_POST['submit'])){
 	
 	<a href="sign-up.php" class="signup-box btn btn-lg btn-default">Sign Up</a>
 	
+	<div class="error-code">
+		<p><?PHP
+		if($_POST){
+			if(isset($_POST['submit'])){
+				if ($_SESSION['error'] == true){
+					echo "*" . $_SESSION['error_text'] . "*";
+					session_unset();
+					session_destroy();
+				}
+			}
+		}	
+		?><p>
+	</div>
+	
 	<div class="login-area">
 		<form name="login" method="post" accept-charset="utf-8">
 
 			<div class="username-text">
-				<br />
 				<br />
 				<img src="images/icons/username-icon.png" alt="Chrome Icon" height="40" width="40">
 				<!-- A Break for my eyes -->
