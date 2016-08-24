@@ -1,11 +1,10 @@
 
 <!-- 
 
-	File: for-chrome.php
+	File: generated-quiz-view.php
 	Author: Ben Tegoni
 	Description:
-	The page in which a user goes to find help about the website.
-	This is a suggestions for chrome.
+	The page that once wanting to complete a quiz you will be redirected here to make the form.
 
 -->
 
@@ -14,6 +13,32 @@
 
 // Include Statements to easily call files
 include 'mysql-connection.php';
+
+if(isset($_GET['intQuizID'])){
+	$intQuizID = $_GET['intQuizID'];
+	echo $intQuizID;
+}
+
+//Start Session
+session_start();
+
+//Check what accountType the user is
+$strUserName = $_SESSION['strUserName'];
+$sql = "SELECT * FROM userdetails WHERE strUserName='$strUserName'";
+$result = $conn->query($sql);
+
+if($strUserName != null){
+	while($row = $result->fetch_assoc()){
+		if($row["strAccountType"] == 'admin' OR $row["strAccountType"] == 'teacher' OR $row["strAccountType"] == 'student'){
+			break;
+		} else {
+			header("Location: /index.php");
+		}
+	}
+} else {
+	header("Location: /index.php");
+}
+
 ?>
 
 <html>
@@ -21,7 +46,7 @@ include 'mysql-connection.php';
 <head>
 
 <meta charset="utf-8">
-<title>For Chrome Page (for-chrome.php)</title>
+<title>Generated Quiz View (generated-quiz-view.php)</title>
 
 <!-- USEFUL LINKS. EXPENDABLE -->
 <!-- http://www.w3schools.com/cssref/ - CSS Code References -->
@@ -47,7 +72,7 @@ include 'mysql-connection.php';
 		background-attachment: fixed;
 		margin: auto;
 	}
-
+	
 	/* Title Text Box Config */
 	.main-text {
 		border: 0px solid black !important;
@@ -80,36 +105,6 @@ include 'mysql-connection.php';
 		text-align: center;
 	}
 	
-	/* Main Chrome Button */
-	.main-content .chrome-icon img {
-		padding-top: 0px;
-		padding-bottom: 0px;
-		padding-right: 0px;
-		padding-left: 0px;
-		height: 300px;
-		width: 300px;
-		margin-top: 100px;
-		margin-left: 270px;
-	}
-	
-	/* Main Text Box */
-	.main-content .main-text-box {
-		border: 10px solid rgba(255, 255, 255, 1.0);
-		background-color: rgba(239, 239, 239, 0.3);
-		box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
-		height: 200px;
-		width: 1000px;
-		margin-left: 500px;
-		margin-top: -250px;
-		border-radius: 50px;
-		padding-top: 35px;
-		padding-left: 50px;
-		padding-right: 50px;
-		padding-bottom: 50px;
-	}
-	
-	/* Text In Main Box */
-	
 	/* Home Button Customisation */
 	.home-button img {
 		border: 0px solid red;
@@ -119,6 +114,15 @@ include 'mysql-connection.php';
 	
 	.home-button img:hover {
 		opacity: 0.7;
+	}
+	
+	/* Main Tabs Config */
+	.main-tabs ul {
+	}
+	
+	.tabs-area {
+		background-color: rgba(96, 96, 96, 	1.00);
+		border-radius: 0px;
 	}
 	
 </style>
@@ -135,23 +139,24 @@ include 'mysql-connection.php';
 </center>
 
 <div class="home-button">
-	<a href="index.php" title="Home Page"><img src="images/icons/home-icon.png" alt="Home Icon" height="50" width="50"></a>
+	<a href="student-login-page.php" title="Home Page"><img src="images/icons/home-icon.png" alt="Home Icon" height="50" width="50"></a>
 </div>
 
-<div class="main-content">
-	<div class="chrome-icon">
-		<img src="images/icons/chrome-icon.png" alt="Chrome Icon" height="250" width="250">
-	</div>
-	<div class="main-text-box">
-		<center>
-			<p>Welcome to Resources2Go Spelling Application</p>
-			<p>If you are experiencing difficulties please open this website in the Google Chrome Browser.</p>
-			<p>You can find Google Chrome at his address if not installed already --></p>
-			<a target="_blank" href="https://www.google.com/chrome/"> Google Chrome Link</a>
-		</center>
-	</div>
+<div class="main-class">
+<br />
+<br />
+	<nav class="tabs-area navbar navbar-inverse navbar-justified">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<a class="navbar-brand" href="admin-login-page.php"><span style="color: white">Resources</span><span style="color: white">2</span><span style="color: rgba(82, 82, 255, 1.0);">Go</span></a>
+			</div>
+			<ul class="nav navbar-nav pull-right">
+				<li class="active"><a href="student-login-page.php">Home</a></li>
+				<li><a onMouseOver="this.style.color='#BDC3C7'" onMouseOut="this.style.color='white'" style="color: white" href="logOutScript.php">Sign Out</a></li>
+			</ul>
+		</div>
+	</nav>
 </div>
-
 
 <footer>
 	<div class="bottom-text">

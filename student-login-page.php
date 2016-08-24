@@ -67,8 +67,9 @@ if($strUserName != null){
 		background-image: url(images/backgrounds/solid-light-blue-hd-wallpaper.jpg);
 		background-repeat: no-repeat;
 		height: 60%;
-		width: 100%;
 		background-attachment: fixed;
+		width: 100%;
+		margin: auto;
 	}
 	
 	/* Title Text Box Config */
@@ -114,6 +115,66 @@ if($strUserName != null){
 		opacity: 0.7;
 	}
 	
+	/* Main Tabs Config */
+	.main-tabs ul {
+	}
+	
+	.tabs-area {
+		background-color: rgba(96, 96, 96, 	1.00);
+		border-radius: 0px;
+	}
+	
+	/* Main Table For Quizzes */
+	table {
+		margin-left: 10%;
+		padding: 10%;
+		text-align: center;
+		width: 100%;
+		height 100%;
+		padding: 20px;
+		background-color: lightgrey;
+		padding-cell: 22px;
+		font-weight: bold;
+	}
+	
+	th, td, table {
+		border: 2px solid white;
+	}
+	
+	th, td {
+		padding: 15px;
+	}
+	
+	th {
+		background-color: #00CCFF;
+		text-align: center;
+		color: white;
+		font-size: 25px;
+	}
+	
+	td {
+		font-size: 20px;
+	}
+	
+	button.quiz-button, button.quiz-button:visited {
+		/*background-color: transparent;*/
+		/*border: 1px solid grey;*/
+		/*background-color: white;*/
+		/*text-decoration: underline;*/
+		height: 60px;
+		width: 100%;
+		margin: 0%;
+		color: black;
+		border: 2px solid black;
+		border-radius: 15px;
+	}
+	
+	button.quiz-button:hover {
+		color: white;
+		background-color: lightblue;
+		border: 2px dotted white;
+	}
+	
 </style>
 
 </head>
@@ -128,8 +189,44 @@ if($strUserName != null){
 </center>
 
 <div class="home-button">
-	<a href="index.php" title="Home Page"><img src="images/icons/home-icon.png" alt="Home Icon" height="50" width="50"></a>
+	<a href="student-login-page.php" title="Home Page"><img src="images/icons/home-icon.png" alt="Home Icon" height="50" width="50"></a>
 </div>
+
+<div class="main-class">
+<br />
+<br />
+	<nav class="tabs-area navbar navbar-inverse navbar-justified">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<a class="navbar-brand" href="admin-login-page.php"><span style="color: white">Resources</span><span style="color: white">2</span><span style="color: rgba(82, 82, 255, 1.0);">Go</span></a>
+			</div>
+			<ul class="nav navbar-nav pull-right">
+				<li class="active"><a href="student-login-page.php">Home</a></li>
+				<li><a onMouseOver="this.style.color='#BDC3C7'" onMouseOut="this.style.color='white'" style="color: white" href="logOutScript.php">Sign Out</a></li>
+			</ul>
+		</div>
+	</nav>
+</div>
+
+<?PHP
+$sql = "SELECT * FROM quizdetails";
+$result = $conn->query($sql);
+
+echo "<br />";
+echo "<table class='main-table' style='width:65%'>";
+	echo "<tr>";
+		echo "<th style='color=black'>" . "Quiz Name" . "</th>";
+		echo "<th style='color=black'>" . "Teachers Name" . "</th>";
+	echo "</tr>";
+	
+while($row = $result->fetch_assoc()){
+	echo "<tr>";
+			echo "<td>" . "<a href='generated-quiz-view.php?intQuizID=$row[intQuizID]'><button class='quiz-button'>" . $row['strQuizName'] . "</button></a>" . "</td>";
+			echo "<td>" . $row['strTeachersName'] . "</td>";
+	echo "</tr>";
+}
+echo "</table>";
+?>
 
 <footer>
 	<div class="bottom-text">

@@ -115,8 +115,9 @@ if($_GET){
 		background-image: url(images/backgrounds/solid-light-blue-hd-wallpaper.jpg);
 		background-repeat: no-repeat;
 		height: 60%;
-		width: 100%;
 		background-attachment: fixed;
+		width: 100%;
+		margin: auto;
 	}
 	
 	/* Title Text Box Config */
@@ -191,6 +192,57 @@ if($_GET){
 		padding-left: 10px;
 	}
 	
+	/* Main Table For Quizzes */
+	table {
+		margin-left: 10%;
+		padding: 10%;
+		text-align: center;
+		width: 100%;
+		height 100%;
+		padding: 20px;
+		background-color: lightgrey;
+		padding-cell: 22px;
+		font-weight: bold;
+	}
+	
+	th, td, table {
+		border: 2px solid white;
+	}
+	
+	th, td {
+		padding: 15px;
+	}
+	
+	th {
+		background-color: #00CCFF;
+		text-align: center;
+		color: white;
+		font-size: 25px;
+	}
+	
+	td {
+		font-size: 20px;
+	}
+	
+	button.quiz-button, button.quiz-button:visited {
+		/*background-color: transparent;*/
+		/*border: 1px solid grey;*/
+		/*background-color: white;*/
+		/*text-decoration: underline;*/
+		height: 60px;
+		width: 100%;
+		margin: 0%;
+		color: black;
+		border: 2px solid black;
+		border-radius: 15px;
+	}
+	
+	button.quiz-button:hover {
+		color: white;
+		background-color: lightblue;
+		border: 2px dotted white;
+	}
+	
 	
 	
 </style>
@@ -244,6 +296,26 @@ if($_GET){
 			?></p>
 	</form>
 </div>
+
+<?PHP
+$sql = "SELECT * FROM quizdetails";
+$result = $conn->query($sql);
+
+echo "<br />";
+echo "<table class='main-table' style='width:65%'>";
+	echo "<tr>";
+		echo "<th style='color=black'>" . "Quiz Name" . "</th>";
+		echo "<th style='color=black'>" . "Teachers Name" . "</th>";
+	echo "</tr>";
+	
+while($row = $result->fetch_assoc()){
+	echo "<tr>";
+			echo "<td>" . "<a href='generated-quiz-view.php?intQuizID=$row[intQuizID]'><button class='quiz-button'>" . $row['strQuizName'] . "</button></a>" . "</td>";
+			echo "<td>" . $row['strTeachersName'] . "</td>";
+	echo "</tr>";
+}
+echo "</table>";
+?>
 
 <footer>
 	<div class="bottom-text">

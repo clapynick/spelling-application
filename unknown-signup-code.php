@@ -1,12 +1,11 @@
 
 <!-- 
 
-	File: for-chrome.php
+	File: unkown-signup-code.php
 	Author: Ben Tegoni
 	Description:
-	The page in which a user goes to find help about the website.
-	This is a suggestions for chrome.
-
+	This is the page where you go if you do not know how to get a sign-up code to sign-up.
+	
 -->
 
 <?php
@@ -21,7 +20,7 @@ include 'mysql-connection.php';
 <head>
 
 <meta charset="utf-8">
-<title>For Chrome Page (for-chrome.php)</title>
+<title>Don't know sign up code Help Page (unknown-signup-code.php)</title>
 
 <!-- USEFUL LINKS. EXPENDABLE -->
 <!-- http://www.w3schools.com/cssref/ - CSS Code References -->
@@ -102,7 +101,7 @@ include 'mysql-connection.php';
 		margin-left: 500px;
 		margin-top: -250px;
 		border-radius: 50px;
-		padding-top: 35px;
+		padding-top: 47px;
 		padding-left: 50px;
 		padding-right: 50px;
 		padding-bottom: 50px;
@@ -140,14 +139,13 @@ include 'mysql-connection.php';
 
 <div class="main-content">
 	<div class="chrome-icon">
-		<img src="images/icons/chrome-icon.png" alt="Chrome Icon" height="250" width="250">
+		<img src="images/icons/unknown-signup-icon.png" alt="Chrome Icon" height="250" width="250">
 	</div>
 	<div class="main-text-box">
 		<center>
 			<p>Welcome to Resources2Go Spelling Application</p>
-			<p>If you are experiencing difficulties please open this website in the Google Chrome Browser.</p>
-			<p>You can find Google Chrome at his address if not installed already --></p>
-			<a target="_blank" href="https://www.google.com/chrome/"> Google Chrome Link</a>
+			<p>If you do not know what the sign-up code box is please speak to your English teacher or admin.</p>
+			<p>They will give you a sign-up code you can use to create an account for Resources2Go.</p>
 		</center>
 	</div>
 </div>

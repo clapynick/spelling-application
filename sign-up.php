@@ -22,14 +22,9 @@ function signUp(){
 	$pass = $_POST['pass'];
 	$passConfirm = $_POST['passConfirm'];
 	$code = $_POST['code'];
-	
-	/*$username = script_tags($username);
-	$pass = script_tags($pass);
-	$passConfirm = script_tags($passConfirm);
-	$code = script_tags($code);*/
-	
-	//Encrypt password
-	/* $password = hash('md5', $pass); ---- DO THIS LATER!! */
+	$success = false;
+	$success_text = "";
+	global $success, $success_text;
 	
 	session_start();
 	$sql = "SELECT * FROM codegen WHERE intGenCode";
@@ -61,7 +56,8 @@ function signUp(){
 							$sql = "INSERT INTO userdetails (strUserName, strPass, intUserID, strAccountType)
 							VALUES ('$username', '$pass', '$intUserID', '$strAccountType')";
 							if ($conn->query($sql) === TRUE) {
-								echo "Congratulations! You have successfully created an account";
+								$success = true;
+								$success_text = "Congratulations! You have successfully created an account";
 							} else {
 								$error = true;
 								$error_text = "Error: Creating an account, please contact a teacher or administrator.";
@@ -77,7 +73,8 @@ function signUp(){
 							$sql = "INSERT INTO userdetails (strUserName, strPass, intUserID, strAccountType)
 							VALUES ('$username', '$pass', '$intUserID', '$strAccountType')";
 							if ($conn->query($sql) === TRUE) {
-								echo "Congratulations! You have successfully created an account";
+								$success = true;
+								$success_text = "Congratulations! You have successfully created an account";
 							} else {
 								$error = true;
 								$error_text = "Error: Creating an account, please contact a teacher or administrator.";
@@ -154,6 +151,7 @@ if($_POST){
 		height: 60%;
 		width: 100%;
 		background-attachment: fixed;
+		margin: auto;
 	}
 	
 	/* Title Text Box Config */
@@ -304,6 +302,15 @@ if($_POST){
 		text-align: center;
 	}
 	
+	/* Success Code Formatting */
+	p.success {
+		border: 0px solid black;
+		color: darkgreen;
+		font-size: 18px;
+		font-weight: bold;
+		text-align: center;
+	}
+	
 </style>
 
 </head>
@@ -333,6 +340,15 @@ if($_POST){
 			}
 		}	
 		?><p>
+		<p class="success"><?PHP
+		if($_POST){
+			if(isset($_POST['submit'])){
+				if ($success == true){
+					echo "*" . $success_text . "*";
+				}
+			}
+		}	
+		?><p>
 	</div>
 
 	
@@ -346,7 +362,7 @@ if($_POST){
 			<div class="password-text">
 				<br />
 				<br />
-				<input id="password" name="pass" type="password" placeholder="Create Password" required>
+				<input pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,16}" title="Must contain at least one number and one uppercase and lowercase letter, and at 6-16 characters long" id="password" name="pass" type="password" placeholder="Create Password" required>
 			</div>
 			
 			<div class="password-text2">
@@ -364,7 +380,7 @@ if($_POST){
 			<div class="submit-button">
 				<br />
 				<br />
-				<input type="submit" name="submit" class="btn btn-lg btn-default" value="Sign Up" />
+				<input type="submit" name="submit" class="btn btn-lg btn-default" value="Submit" />
 				<br />
 			</div>
 
@@ -372,7 +388,7 @@ if($_POST){
 			
 			<div class="questions">		
 				<center><a href="forgotten-password.php">Forgotten your password?</a></center>
-				<center><a href="#">Don't know the Sign Up Code?</a></center>
+				<center><a href="unknown-signup-code.php">Don't know the Sign Up Code?</a></center>
 			</div>
 		</form>
 	</div>

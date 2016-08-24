@@ -44,6 +44,7 @@ include 'mysql-connection.php';
 		height: 60%;
 		width: 100%;
 		background-attachment: fixed;
+		margin: auto;
 	}
 	
 	/* Title Text Box Config */
@@ -89,6 +90,15 @@ include 'mysql-connection.php';
 		opacity: 0.7;
 	}
 	
+	/* Main Tabs Config */
+	.main-tabs ul {
+	}
+	
+	.tabs-area {
+		background-color: rgba(96, 96, 96, 	1.00);
+		border-radius: 0px;
+	}
+	
 </style>
 
 </head>
@@ -104,6 +114,22 @@ include 'mysql-connection.php';
 
 <div class="home-button">
 	<a href="index.php" title="Home Page"><img src="images/icons/home-icon.png" alt="Home Icon" height="50" width="50"></a>
+</div>
+
+<div class="main-class">
+<br />
+<br />
+	<nav class="tabs-area navbar navbar-inverse navbar-justified">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<a class="navbar-brand" href="admin-login-page.php"><span style="color: white">Resources</span><span style="color: white">2</span><span style="color: rgba(82, 82, 255, 1.0);">Go</span></a>
+			</div>
+			<ul class="nav navbar-nav pull-right">
+				<li class="active"><a href="student-login-page.php">Home</a></li>
+				<li><a onMouseOver="this.style.color='#BDC3C7'" onMouseOut="this.style.color='white'" style="color: white" href="logOutScript.php">Sign Out</a></li>
+			</ul>
+		</div>
+	</nav>
 </div>
 
 <footer>

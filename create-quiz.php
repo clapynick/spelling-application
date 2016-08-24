@@ -210,6 +210,7 @@ if($_POST){
 		height: 60%;
 		width: 100%;
 		background-attachment: fixed;
+		margin: auto;
 	}
 	
 	/* Title Text Box Config */
@@ -400,162 +401,172 @@ if($_POST){
 		<form name="create-quiz" method="post" accept-charset="utf-8">
 			<!-- break for my eyes 0 -->
 			<br /><br />
-			<p class="teacher-stuff">Quiz Name: <input class="form-input" type="text" name="strQuizName" value="" required />
+			<p class="teacher-stuff">Quiz Name: <input pattern="[a-zA-Z\s]+{1,80}" title="No numbers or symbols. 80 characters maximum." class="form-input" type="text" name="strQuizName" value="" required />
 			<span class="easter">easter</span>
-			Teacher Name: <input class="form-input" type="text" name="strTeachersName" value="" required /></p>
+			Teacher Name: <input pattern="[a-zA-Z\s]+{1,100}" title="No numbers or symbols. 100 characters maximum." class="form-input" type="text" name="strTeachersName" value="" required /></p>
 			<br /><br />
 			<hr width="50%"/>
 		
 			<!-- break for my eyes 1 -->
 			<br /><br />
-			<p class="correct-word">Correct Word - 1: <input class="form-input" type="text" name="strQuestion1_r" value="" required /></p>
+			<p class="correct-word">Correct Word - 1: <input pattern="[a-zA-Z]{1,28}" title="No numbers, symbols or spaces. 28 characters maximum." class="form-input" type="text" name="strQuestion1_r" value="" required /></p>
 			<br /><br />
-			<p class="variation-word">Variation - 1, 1: <input class="form-input" type="text" name="strQuestion1_w1" value="" required /></p>
+			<p class="variation-word">Variation - 1, 1: <input pattern="[a-zA-Z]{1,50}" title="No numbers, symbols or spaces. 50 characters maximum." class="form-input" type="text" name="strQuestion1_w1" value="" required /></p>
 			<br /><br />
-			<p class="variation-word">Variation - 1, 2: <input class="form-input" type="text" name="strQuestion1_w2" value="" required /></p>
+			<p class="variation-word">Variation - 1, 2: <input pattern="[a-zA-Z]{1,50}" title="No numbers, symbols or spaces. 50 characters maximum." class="form-input" type="text" name="strQuestion1_w2" value="" required /></p>
 			<br /><br />
 			<hr width="50%"/>
 			
 			<!-- break for my eyes 2 -->
 			<br /><br />
-			<p class="correct-word">Correct Word - 2: <input class="form-input" type="text" name="strQuestion2_r" value="" required /></p>
+			<p class="correct-word">Correct Word - 2: <input pattern="[a-zA-Z]{1,28}" title="No numbers, symbols or spaces. 28 characters maximum." class="form-input" type="text" name="strQuestion2_r" value="" required /></p>
 			<br /><br />
-			<p class="variation-word">Variation - 2, 1: <input class="form-input" type="text" name="strQuestion2_w1" value="" required /></p>
+			<p class="variation-word">Variation - 2, 1: <input pattern="[a-zA-Z]{1,50}" title="No numbers, symbols or spaces. 50 characters maximum." class="form-input" type="text" name="strQuestion2_w1" value="" required /></p>
 			<br /><br />
-			<p class="variation-word">Variation - 2, 2: <input class="form-input" type="text" name="strQuestion2_w2" value="" required /></p>
+			<p class="variation-word">Variation - 2, 2: <input pattern="[a-zA-Z]{1,50}" title="No numbers, symbols or spaces. 50 characters maximum." class="form-input" type="text" name="strQuestion2_w2" value="" required /></p>
 			<br /><br />
 			<hr width="50%"/>
 			
 			<!-- break for my eyes 3 -->
 			<br /><br />
-			<p class="correct-word">Correct Word - 3: <input class="form-input" type="text" name="strQuestion3_r" value="" required /></p>
+			<p class="correct-word">Correct Word - 3: <input pattern="[a-zA-Z]{1,28}" title="No numbers, symbols or spaces. 28 characters maximum." class="form-input" type="text" name="strQuestion3_r" value="" required /></p>
 			<br /><br />
-			<p class="variation-word">Variation - 3, 1: <input class="form-input" type="text" name="strQuestion3_w1" value="" required /></p>
+			<p class="variation-word">Variation - 3, 1: <input pattern="[a-zA-Z]{1,50}" title="No numbers, symbols or spaces. 50 characters maximum." class="form-input" type="text" name="strQuestion3_w1" value="" required /></p>
 			<br /><br />
-			<p class="variation-word">Variation - 3, 2: <input class="form-input" type="text" name="strQuestion3_w2" value="" required /></p>
+			<p class="variation-word">Variation - 3, 2: <input pattern="[a-zA-Z]{1,50}" title="No numbers, symbols or spaces. 50 characters maximum." class="form-input" type="text" name="strQuestion3_w2" value="" required /></p>
 			<br /><br />
 			<hr width="50%"/>
 			
 			<!-- break for my eyes 4 -->
 			<br /><br />
-			<p class="correct-word">Correct Word - 4: <input class="form-input" type="text" name="strQuestion4_r" value="" required /></p>
+			<p class="correct-word">Correct Word - 4: <input pattern="[a-zA-Z]{1,28}" title="No numbers, symbols or spaces. 28 characters maximum." class="form-input" type="text" name="strQuestion4_r" value="" required /></p>
 			<br /><br />
-			<p class="variation-word">Variation - 4, 1: <input class="form-input" type="text" name="strQuestion4_w1" value="" required /></p>
+			<p class="variation-word">Variation - 4, 1: <input pattern="[a-zA-Z]{1,50}" title="No numbers, symbols or spaces. 50 characters maximum." class="form-input" type="text" name="strQuestion4_w1" value="" required /></p>
 			<br /><br />
-			<p class="variation-word">Variation - 4, 2: <input class="form-input" type="text" name="strQuestion4_w2" value="" required /></p>
+			<p class="variation-word">Variation - 4, 2: <input pattern="[a-zA-Z]{1,50}" title="No numbers, symbols or spaces. 50 characters maximum." class="form-input" type="text" name="strQuestion4_w2" value="" required /></p>
 			<br /><br />
 			<hr width="50%"/>
 			
 			<!-- break for my eyes 5 -->
 			<br /><br />
-			<p class="correct-word">Correct Word - 5: <input class="form-input" type="text" name="strQuestion5_r" value="" required /></p>
+			<p class="correct-word">Correct Word - 5: <input pattern="[a-zA-Z]{1,28}" title="No numbers, symbols or spaces. 28 characters maximum." class="form-input" type="text" name="strQuestion5_r" value="" required /></p>
 			<br /><br />
-			<p class="variation-word">Variation - 5, 1: <input class="form-input" type="text" name="strQuestion5_w1" value="" required /></p>
+			<p class="variation-word">Variation - 5, 1: <input pattern="[a-zA-Z]{1,50}" title="No numbers, symbols or spaces. 50 characters maximum." class="form-input" type="text" name="strQuestion5_w1" value="" required /></p>
 			<br /><br />
-			<p class="variation-word">Variation - 5, 2: <input class="form-input" type="text" name="strQuestion5_w2" value="" required /></p>
+			<p class="variation-word">Variation - 5, 2: <input pattern="[a-zA-Z]{1,50}" title="No numbers, symbols or spaces. 50 characters maximum." class="form-input" type="text" name="strQuestion5_w2" value="" required /></p>
 			<br /><br />
 			<hr width="50%"/>
 			
 			<!-- break for my eyes 6 -->
 			<br /><br />
-			<p class="correct-word">Correct Word - 6: <input class="form-input" type="text" name="strQuestion6_r" value="" required /></p>
+			<p class="correct-word">Correct Word - 6: <input pattern="[a-zA-Z]{1,28}" title="No numbers, symbols or spaces. 28 characters maximum." class="form-input" type="text" name="strQuestion6_r" value="" required /></p>
 			<br /><br />
-			<p class="variation-word">Variation - 6, 1: <input class="form-input" type="text" name="strQuestion6_w1" value="" required /></p>
+			<p class="variation-word">Variation - 6, 1: <input pattern="[a-zA-Z]{1,50}" title="No numbers, symbols or spaces. 50 characters maximum." class="form-input" type="text" name="strQuestion6_w1" value="" required /></p>
 			<br /><br />
-			<p class="variation-word">Variation - 6, 2: <input class="form-input" type="text" name="strQuestion6_w2" value="" required /></p>
+			<p class="variation-word">Variation - 6, 2: <input pattern="[a-zA-Z]{1,50}" title="No numbers, symbols or spaces. 50 characters maximum." class="form-input" type="text" name="strQuestion6_w2" value="" required /></p>
 			<br /><br />
 			<hr width="50%"/>
 			
 			<!-- break for my eyes 7 -->
 			<br /><br />
-			<p class="correct-word">Correct Word - 7: <input class="form-input" type="text" name="strQuestion7_r" value="" required /></p>
+			<p class="correct-word">Correct Word - 7: <input pattern="[a-zA-Z]{1,28}" title="No numbers, symbols or spaces. 28 characters maximum." class="form-input" type="text" name="strQuestion7_r" value="" required /></p>
 			<br /><br />
-			<p class="variation-word">Variation - 7, 1: <input class="form-input" type="text" name="strQuestion7_w1" value="" required /></p>
+			<p class="variation-word">Variation - 7, 1: <input pattern="[a-zA-Z]{1,50}" title="No numbers, symbols or spaces. 50 characters maximum." class="form-input" type="text" name="strQuestion7_w1" value="" required /></p>
 			<br /><br />
-			<p class="variation-word">Variation - 7, 2: <input class="form-input" type="text" name="strQuestion7_w2" value="" required /></p>
+			<p class="variation-word">Variation - 7, 2: <input pattern="[a-zA-Z]{1,50}" title="No numbers, symbols or spaces. 50 characters maximum." class="form-input" type="text" name="strQuestion7_w2" value="" required /></p>
 			<br /><br />
 			<hr width="50%"/>
 			
 			<!-- break for my eyes 8 -->
 			<br /><br />
-			<p class="correct-word">Correct Word - 8: <input class="form-input" type="text" name="strQuestion8_r" value="" required /></p>
+			<p class="correct-word">Correct Word - 8: <input pattern="[a-zA-Z]{1,28}" title="No numbers, symbols or spaces. 28 characters maximum." class="form-input" type="text" name="strQuestion8_r" value="" required /></p>
 			<br /><br />
-			<p class="variation-word">Variation - 8, 1: <input class="form-input" type="text" name="strQuestion8_w1" value="" required /></p>
+			<p class="variation-word">Variation - 8, 1: <input pattern="[a-zA-Z]{1,50}" title="No numbers, symbols or spaces. 50 characters maximum." class="form-input" type="text" name="strQuestion8_w1" value="" required /></p>
 			<br /><br />
-			<p class="variation-word">Variation - 8, 2: <input class="form-input" type="text" name="strQuestion8_w2" value="" required /></p>
+			<p class="variation-word">Variation - 8, 2: <input pattern="[a-zA-Z]{1,50}" title="No numbers, symbols or spaces. 50 characters maximum." class="form-input" type="text" name="strQuestion8_w2" value="" required /></p>
 			<br /><br />
 			<hr width="50%"/>
 			
 			<!-- break for my eyes 9 -->
 			<br /><br />
-			<p class="correct-word">Correct Word - 9: <input class="form-input" type="text" name="strQuestion9_r" value="" required /></p>
+			<p class="correct-word">Correct Word - 9: <input pattern="[a-zA-Z]{1,28}" title="No numbers, symbols or spaces. 28 characters maximum." class="form-input" type="text" name="strQuestion9_r" value="" required /></p>
 			<br /><br />
-			<p class="variation-word">Variation - 9, 1: <input class="form-input" type="text" name="strQuestion9_w1" value="" required /></p>
+			<p class="variation-word">Variation - 9, 1: <input pattern="[a-zA-Z]{1,50}" title="No numbers, symbols or spaces. 50 characters maximum." class="form-input" type="text" name="strQuestion9_w1" value="" required /></p>
 			<br /><br />
-			<p class="variation-word">Variation - 9, 2: <input class="form-input" type="text" name="strQuestion9_w2" value="" required /></p>
+			<p class="variation-word">Variation - 9, 2: <input pattern="[a-zA-Z]{1,50}" title="No numbers, symbols or spaces. 50 characters maximum." class="form-input" type="text" name="strQuestion9_w2" value="" required /></p>
 			<br /><br />
 			<hr width="50%"/>
 			
 			<!-- break for my eyes 10 -->
 			<br />
-			<p class="correct-word">Correct Word - 10: <input class="form-input" type="text" name="strQuestion10_r" value="" required /></p>
+			<p class="correct-word">Correct Word - 10: <input pattern="[a-zA-Z]{1,28}" title="No numbers, symbols or spaces. 28 characters maximum." class="form-input" type="text" name="strQuestion10_r" value="" required /></p>
 			<br /><br />
-			<p class="variation-word">Variation - 10, 1: <input class="form-input" type="text" name="strQuestion10_w1" value="" required /></p>
+			<p class="variation-word">Variation - 10, 1: <input pattern="[a-zA-Z]{1,50}" title="No numbers, symbols or spaces. 50 characters maximum." class="form-input" type="text" name="strQuestion10_w1" value="" required /></p>
 			<br /><br />
-			<p class="variation-word">Variation - 10, 2: <input class="form-input" type="text" name="strQuestion10_w2" value="" required /></p>
+			<p class="variation-word">Variation - 10, 2: <input pattern="[a-zA-Z]{1,50}" title="No numbers, symbols or spaces. 50 characters maximum." class="form-input" type="text" name="strQuestion10_w2" value="" required /></p>
 			<br /><br />
 			<hr width="50%"/>
 			
 			<!-- break for my eyes 11 -->
 			<br /><br />
-			<p class="correct-word">Correct Word - 11: <input class="form-input" type="text" name="strQuestion11_r" value="" required /></p>
+			<p class="correct-word">Correct Word - 11: <input pattern="[a-zA-Z]{1,28}" title="No numbers, symbols or spaces. 28 characters maximum." class="form-input" type="text" name="strQuestion11_r" value="" required /></p>
 			<br /><br />
-			<p class="variation-word">Variation - 11, 1: <input class="form-input" type="text" name="strQuestion11_w1" value="" required /></p>
+			<p class="variation-word">Variation - 11, 1: <input pattern="[a-zA-Z]{1,50}" title="No numbers, symbols or spaces. 50 characters maximum." class="form-input" type="text" name="strQuestion11_w1" value="" required /></p>
 			<br /><br />
-			<p class="variation-word">Variation - 11, 2: <input class="form-input" type="text" name="strQuestion11_w2" value="" required /></p>
+			<p class="variation-word">Variation - 11, 2: <input pattern="[a-zA-Z]{1,50}" title="No numbers, symbols or spaces. 50 characters maximum." class="form-input" type="text" name="strQuestion11_w2" value="" required /></p>
 			<br /><br />
 			<hr width="50%"/>
 			
 			<!-- break for my eyes 12 -->
 			<br /><br />
-			<p class="correct-word">Correct Word - 12: <input class="form-input" type="text" name="strQuestion12_r" value="" required /></p>
+			<p class="correct-word">Correct Word - 12: <input pattern="[a-zA-Z]{1,28}" title="No numbers, symbols or spaces. 28 characters maximum." class="form-input" type="text" name="strQuestion12_r" value="" required /></p>
 			<br /><br />
-			<p class="variation-word">Variation - 12, 1: <input class="form-input" type="text" name="strQuestion12_w1" value="" required /></p>
+			<p class="variation-word">Variation - 12, 1: <input pattern="[a-zA-Z]{1,50}" title="No numbers, symbols or spaces. 50 characters maximum." class="form-input" type="text" name="strQuestion12_w1" value="" required /></p>
 			<br /><br />
-			<p class="variation-word">Variation - 12, 2: <input class="form-input" type="text" name="strQuestion12_w2" value="" required /></p>
+			<p class="variation-word">Variation - 12, 2: <input pattern="[a-zA-Z]{1,50}" title="No numbers, symbols or spaces. 50 characters maximum." class="form-input" type="text" name="strQuestion12_w2" value="" required /></p>
 			<br /><br />
 			<hr width="50%"/>
 
 			
 			<!-- break for my eyes 13 -->
 			<br /><br />
-			<p class="correct-word">Correct Word - 13: <input class="form-input" type="text" name="strQuestion13_r" value="" required /></p>
+			<p class="correct-word">Correct Word - 13: <input pattern="[a-zA-Z]{1,28}" title="No numbers, symbols or spaces. 28 characters maximum." class="form-input" type="text" name="strQuestion13_r" value="" required /></p>
 			<br /><br />
-			<p class="variation-word">Variation - 13, 1: <input class="form-input" type="text" name="strQuestion13_w1" value="" required /></p>
+			<p class="variation-word">Variation - 13, 1: <input pattern="[a-zA-Z]{1,50}" title="No numbers, symbols or spaces. 50 characters maximum." class="form-input" type="text" name="strQuestion13_w1" value="" required /></p>
 			<br /><br />
-			<p class="variation-word">Variation - 13, 2: <input class="form-input" type="text" name="strQuestion13_w2" value="" required /></p>
+			<p class="variation-word">Variation - 13, 2: <input pattern="[a-zA-Z]{1,50}" title="No numbers, symbols or spaces. 50 characters maximum." class="form-input" type="text" name="strQuestion13_w2" value="" required /></p>
 			<br /><br />
 			<hr width="50%"/>
 			
 			<!-- break for my eyes 14 -->
 			<br /><br />
-			<p class="correct-word">Correct Word - 14: <input class="form-input" type="text" name="strQuestion14_r" value="" required /></p>
+			<p class="correct-word">Correct Word - 14: <input pattern="[a-zA-Z]{1,28}" title="No numbers, symbols or spaces. 28 characters maximum." class="form-input" type="text" name="strQuestion14_r" value="" required /></p>
 			<br /><br />
-			<p class="variation-word">Variation - 14, 1: <input class="form-input" type="text" name="strQuestion14_w1" value="" required /></p>
+			<p class="variation-word">Variation - 14, 1: <input pattern="[a-zA-Z]{1,50}" title="No numbers, symbols or spaces. 50 characters maximum." class="form-input" type="text" name="strQuestion14_w1" value="" required /></p>
 			<br /><br />
-			<p class="variation-word">Variation - 14, 2: <input class="form-input" type="text" name="strQuestion14_w2" value="" required /></p>
+			<p class="variation-word">Variation - 14, 2: <input pattern="[a-zA-Z]{1,50}" title="No numbers, symbols or spaces. 50 characters maximum." class="form-input" type="text" name="strQuestion14_w2" value="" required /></p>
 			<br /><br />
 			<hr width="50%"/>
 			
 			<!-- break for my eyes 15 -->
 			<br /><br />
-			<p class="correct-word">Correct Word - 15: <input class="form-input" type="text" name="strQuestion15_r" value="" required /></p>
+			<p class="correct-word">Correct Word - 15: <input pattern="[a-zA-Z]{1,28}" title="No numbers, symbols or spaces. 28 characters maximum." class="form-input" type="text" name="strQuestion15_r" value="" required /></p>
 			<br /><br />
-			<p class="variation-word">Variation - 15, 1: <input class="form-input" type="text" name="strQuestion15_w1" value="" required /></p>
+			<p class="variation-word">Variation - 15, 1: <input pattern="[a-zA-Z]{1,50}" title="No numbers, symbols or spaces. 50 characters maximum." class="form-input" type="text" name="strQuestion15_w1" value="" required /></p>
 			<br /><br />
-			<p class="variation-word">Variation - 15, 2: <input class="form-input" type="text" name="strQuestion15_w2" value="" required /></p>
+			<p class="variation-word">Variation - 15, 2: <input pattern="[a-zA-Z]{1,50}" title="No numbers, symbols or spaces. 50 characters maximum." class="form-input" type="text" name="strQuestion15_w2" value="" required /></p>
 			<br /><br />
 			<hr width="50%"/>
+			
+			<p class="success"><?PHP
+			if($_POST){
+				if(isset($_POST['submit'])){
+					if ($success == true){
+						echo "*" . $success_text . "*";
+					}
+				}
+			}	
+			?><p>
 			
 			<div class="submit-button">
 				<br />

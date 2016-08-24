@@ -125,6 +125,7 @@ if(isset($_POST['submit'])){
 		height: 60%;
 		width: 100%;
 		background-attachment: fixed;
+		margin: auto;
 	}
 	
 	/* Title Text Box Config */
