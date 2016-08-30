@@ -148,6 +148,7 @@ if($_POST){
 	body {
 		background-image: url(images/backgrounds/solid-light-blue-hd-wallpaper.jpg);
 		background-repeat: no-repeat;
+		background-size: cover;
 		height: 60%;
 		width: 100%;
 		background-attachment: fixed;

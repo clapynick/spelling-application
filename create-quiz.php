@@ -207,6 +207,7 @@ if($_POST){
 	body {
 		background-image: url(images/backgrounds/solid-light-blue-hd-wallpaper.jpg);
 		background-repeat: no-repeat;
+		background-size: cover;
 		height: 60%;
 		width: 100%;
 		background-attachment: fixed;
@@ -252,6 +253,17 @@ if($_POST){
 	.tabs-area {
 		background-color: rgba(96, 96, 96, 	1.00);
 		border-radius: 0px;
+	}
+	
+	/* Home Button Customisation */
+	.home-button img {
+		border: 0px solid red;
+		margin-left: 1435px;
+		margin-top: -42px;
+	}
+	
+	.home-button img:hover {
+		opacity: 0.7;
 	}
 	
 	/* Generate Code Button and Text Area */
@@ -346,6 +358,10 @@ if($_POST){
 		<h1><span style="color:white">Resources</span><span style="color: white">2</span><span style="color: rgba(82, 82, 255, 1.0);">Go</span></h1>
 	</div>
 </center>
+
+<div class="home-button">
+	<a href="teacher-login-page.php" title="Home Page"><img src="images/icons/home-icon.png" alt="Home Icon" height="50" width="50"></a>
+</div>
 
 <div class="main-class">
 <br />

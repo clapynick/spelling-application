@@ -114,6 +114,7 @@ if($_GET){
 	body {
 		background-image: url(images/backgrounds/solid-light-blue-hd-wallpaper.jpg);
 		background-repeat: no-repeat;
+		background-size: cover;
 		height: 60%;
 		background-attachment: fixed;
 		width: 100%;
@@ -159,6 +160,17 @@ if($_GET){
 	.tabs-area {
 		background-color: rgba(96, 96, 96, 	1.00);
 		border-radius: 0px;
+	}
+	
+	/* Home Button Customisation */
+	.home-button img {
+		border: 0px solid red;
+		margin-left: 1435px;
+		margin-top: -42px;
+	}
+	
+	.home-button img:hover {
+		opacity: 0.7;
 	}
 	
 	/* Generate Code Button and Text Area */
@@ -225,10 +237,6 @@ if($_GET){
 	}
 	
 	button.quiz-button, button.quiz-button:visited {
-		/*background-color: transparent;*/
-		/*border: 1px solid grey;*/
-		/*background-color: white;*/
-		/*text-decoration: underline;*/
 		height: 60px;
 		width: 100%;
 		margin: 0%;
@@ -257,6 +265,10 @@ if($_GET){
 		<h1><span style="color:white">Resources</span><span style="color: white">2</span><span style="color: rgba(82, 82, 255, 1.0);">Go</span></h1>
 	</div>
 </center>
+
+<div class="home-button">
+	<a href="teacher-login-page.php" title="Home Page"><img src="images/icons/home-icon.png" alt="Home Icon" height="50" width="50"></a>
+</div>
 
 <div class="main-class">
 <br />
@@ -306,12 +318,16 @@ echo "<table class='main-table' style='width:65%'>";
 	echo "<tr>";
 		echo "<th style='color=black'>" . "Quiz Name" . "</th>";
 		echo "<th style='color=black'>" . "Teachers Name" . "</th>";
+		echo "<th style='color=black'>" . "Quiz Results". "</th>";
+		echo "<th style='color=black background-color=transparent'>" . "Delete Quiz" ."</th>";
 	echo "</tr>";
 	
 while($row = $result->fetch_assoc()){
 	echo "<tr>";
 			echo "<td>" . "<a href='generated-quiz-view.php?intQuizID=$row[intQuizID]'><button class='quiz-button'>" . $row['strQuizName'] . "</button></a>" . "</td>";
 			echo "<td>" . $row['strTeachersName'] . "</td>";
+			echo "<td class='quiz-results'>" . "<a href='delete-quiz.php?intQuizID=$row[intQuizID]'><img title='Quiz Results' width='35px' height='35px' src='images/icons/results-icon.png' class='delete-img'>" . "</img></a>" . "</td>";
+			echo "<td class='delete-quiz'>" . "<a href='delete-quiz.php?intQuizID=$row[intQuizID]'><img title='Delete Quiz' width='35px' height='35px' src='images/icons/delete-icon.png' class='delete-img'>" . "</img></a>" . "</td>";
 	echo "</tr>";
 }
 echo "</table>";

@@ -66,6 +66,7 @@ if($strUserName != null){
 	body {
 		background-image: url(images/backgrounds/solid-light-blue-hd-wallpaper.jpg);
 		background-repeat: no-repeat;
+		background-size: cover;
 		height: 60%;
 		background-attachment: fixed;
 		width: 100%;
