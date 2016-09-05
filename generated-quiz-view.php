@@ -22,6 +22,7 @@ if(isset($_GET['intQuizID'])){
 session_start();
 
 //Check what accountType the user is
+$intUserID = $_SESSION['intUserID'];
 $strUserName = $_SESSION['strUserName'];
 $sql = "SELECT * FROM userdetails WHERE strUserName='$strUserName'";
 $result = $conn->query($sql);
@@ -31,7 +32,7 @@ if($strUserName != null){
 		if($row["strAccountType"] == 'admin' OR $row["strAccountType"] == 'teacher'){
 			header("Location: /teacher-login-page.php");
 		} else if($row["strAccountType"] == 'student'){
-			//Do nothing is Account Type is equal to student.
+			//Do nothing if Account Type is equal to student.
 		} else {
 			header("Location: /index.php");
 		}
@@ -53,7 +54,49 @@ while($row = $result->fetch_assoc()){
 
 //Function that checks the results entered for the quiz.
 function checkResults(){
-	echo "function called correctly";
+	global $conn;
+	//echo "function called correctly";
+	
+	for($i=1; $i < 16; $i++){
+		global $intUserID, $intQuizID, $strQuizName;
+		$studentAns = $_POST[$i];
+		$sql = "SELECT strQuestion" . $i . "_r FROM quizdetails WHERE intQuizID='$intQuizID'";
+		$result = $conn->query($sql);
+		
+		while($row = $result->fetch_assoc()){
+			$sql = "INSERT INTO userquizzes (intUserID, intQuizID, strQuizName)
+					VALUES ('$intUserID', '$intQuizID', '$strQuizName')";
+			if ($conn->query($sql) === TRUE) {
+				echo "";
+			} else {
+				echo "";
+			}
+			
+			$correctAns = $row['strQuestion' . $i . '_r'];
+			if($correctAns == $studentAns){
+				$intQuestion = "intQuestion$i";
+				$strQuestion = "strQuestion$i";
+				$yes = "1";
+				$sql = "UPDATE userquizzes SET $intQuestion='$yes', $strQuestion='$studentAns' WHERE intQuizID='$intQuizID'";
+				if ($conn->query($sql) === TRUE) {
+					echo "";
+				} else {
+					echo "";
+				}
+			} else {
+				$intQuestion = "intQuestion$i";
+				$strQuestion = "strQuestion$i";
+				$no = "0";
+				$sql = "UPDATE userquizzes SET $intQuestion='$no', $strQuestion='$studentAns' WHERE intQuizID='$intQuizID'";
+				if ($conn->query($sql) === TRUE) {
+					echo "";
+				} else {
+					echo "";
+				}
+			}
+		}
+		//echo "Student for Q $i: $studentAns AND Correct for Q $i: $correctAns <br />";
+	}
 }
 
 if($_POST){
@@ -141,7 +184,7 @@ if($_POST){
 	}
 	
 	/* Main Tabs Config */
-	.main-tabs ul {
+	.main-class {
 	}
 	
 	.tabs-area {
@@ -174,6 +217,12 @@ if($_POST){
 	.submit-button input {
 		width: 500px;
 		border-radius: 3px;
+	}
+	
+	input[type=radio] {
+		border: 0px;
+		width: 22px;
+		height: 22px;
 	}
 	
 </style>
@@ -225,25 +274,25 @@ for($i = 1; $i < 16; $i++){
 	//Randomise the way radio buttons are displayed for word 1
 	if ($case == 1) {
 		echo "<h3>Question $i - </h3>";
-		echo "<input type='radio' name='$i' id='1.1'>" . $strQuestions['strQuestion' . $i . '_r'] . "</input>" . "<br>";
-		echo "<input type='radio' name='$i' id='1.2'>" . $strQuestions['strQuestion' . $i . '_w1'] . "</input>" . "<br>";
-		echo "<input type='radio' name='$i' id='1.3'>" . $strQuestions['strQuestion' . $i . '_w2'] . "</input>" . "<br>";
+		echo "<input type='radio' value='" . $strQuestions["strQuestion" . $i . "_r"] . "' name='$i' id='$i.1' required>" . $strQuestions['strQuestion' . $i . '_r'] . "</input><br>";
+		echo "<input type='radio' value='" . $strQuestions["strQuestion" . $i . "_w1"] . "' name='$i' id='$i.2' required>" . $strQuestions['strQuestion' . $i . '_w1'] . "</input>" . "<br>";
+		echo "<input type='radio' value='" . $strQuestions["strQuestion" . $i . "_w2"] . "' name='$i' id='$i.3' required>" . $strQuestions['strQuestion' . $i . '_w2'] . "</input>" . "<br>";
 		echo "<br/>";
 		echo "<hr style='width:60%'>";
 		echo "<br/>";
 	} elseif ($case == 2) {
 		echo "<h3>Question $i - </h3>";
-		echo "<input type='radio' name='$i' id='1.1'>" . $strQuestions['strQuestion' . $i . '_w2'] . "</input>" . "<br>";
-		echo "<input type='radio' name='$i' id='1.2'>" . $strQuestions['strQuestion' . $i . '_r'] . "</input>" . "<br>";
-		echo "<input type='radio' name='$i' id='1.3'>" . $strQuestions['strQuestion' . $i . '_w1'] . "</input>" . "<br>";
+		echo "<input type='radio' value='" . $strQuestions["strQuestion" . $i . "_w2"] . "' name='$i' id='$i.1' required>" . $strQuestions['strQuestion' . $i . '_w2'] . "</input>" . "<br>";
+		echo "<input type='radio' value='" . $strQuestions["strQuestion" . $i . "_r"] . "' name='$i' id='$i.2' required>" . $strQuestions['strQuestion' . $i . '_r'] . "</input>" . "<br>";
+		echo "<input type='radio'  value='" . $strQuestions["strQuestion" . $i . "_w1"] . "' name='$i' id='$i.3' required>" . $strQuestions['strQuestion' . $i . '_w1'] . "</input>" . "<br>";
 		echo "<br/>";
 		echo "<hr style='width:60%'>";
 		echo "<br/>";
 	} else {
 		echo "<h3>Question $i - </h3>";
-		echo "<input type='radio' name='$i' id='1.1'>" . $strQuestions['strQuestion' . $i . '_r'] . "</input>" . "<br>";
-		echo "<input type='radio' name='$i' id='1.2'>" . $strQuestions['strQuestion' . $i . '_r'] . "</input>" . "<br>";
-		echo "<input type='radio' name='$i' id='1.3'>" . $strQuestions['strQuestion' . $i . '_r'] . "</input>" . "<br>";
+		echo "<input type='radio' value='" . $strQuestions["strQuestion" . $i . "_w1"] . "' name='$i' id='$i.1' required>" . $strQuestions['strQuestion' . $i . '_w1'] . "</input>" . "<br>";
+		echo "<input type='radio' value='" . $strQuestions["strQuestion" . $i . "_w2"] . "' name='$i' id='$i.2' required>" . $strQuestions['strQuestion' . $i . '_w2'] . "</input>" . "<br>";
+		echo "<input type='radio' value='" . $strQuestions["strQuestion" . $i . "_r"] . "' name='$i' id='$i.3' required>" . $strQuestions['strQuestion' . $i . '_r'] . "</input>" . "<br>";
 		echo "<br/>";
 		echo "<hr style='width:60%'>";
 		echo "<br/>";

@@ -45,7 +45,15 @@ function deleteQuiz($conn){
 	include 'mysql-connection.php';
 	
 	$sql = "DELETE FROM quizdetails WHERE intQuizID='$intQuizID'";
+	if ($conn->query($sql) === TRUE) {
+		echo "Record deleted successfully";
+		header ('Location: /teacher-login-page.php');
+	} else {
+		echo "Error deleting record: " . $conn->error;
+	}
 	
+	//Delete Info In userquizzes
+	$sql = "DELETE FROM userquizzes WHERE intQuizID='$intQuizID'";
 	if ($conn->query($sql) === TRUE) {
 		echo "Record deleted successfully";
 		header ('Location: /teacher-login-page.php');

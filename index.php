@@ -42,6 +42,8 @@ function checkDetails($conn) {
 				echo "Logging in successful.";
 				//Set of if statements to check the accountType of the user
 				$strUserName = $row['strUserName'];
+				$intUserID = $row['intUserID'];
+				$_SESSION['intUserID'] = $intUserID;
 				$sql = "SELECT * FROM userdetails WHERE strUserName='$username'";
 				$result = $conn->query($sql);
 				$_SESSION['strUserName'] = $strUserName;

@@ -127,7 +127,6 @@ if($strUserName != null){
 	
 	/* Main Table For Quizzes */
 	table {
-		margin-left: 10%;
 		padding: 10%;
 		text-align: center;
 		width: 100%;
@@ -140,6 +139,7 @@ if($strUserName != null){
 	
 	th, td, table {
 		border: 2px solid white;
+		width: 100%;
 	}
 	
 	th, td {
@@ -209,6 +209,7 @@ if($strUserName != null){
 	</nav>
 </div>
 
+<center>
 <?PHP
 $sql = "SELECT * FROM quizdetails";
 $result = $conn->query($sql);
@@ -218,16 +219,22 @@ echo "<table class='main-table' style='width:65%'>";
 	echo "<tr>";
 		echo "<th style='color=black'>" . "Quiz Name" . "</th>";
 		echo "<th style='color=black'>" . "Teachers Name" . "</th>";
+		echo "<th style='color=black'>" . "Completed". "</th>";
+		echo "<th style='color=black background-color=transparent'>" . "Quiz Results" ."</th>";
 	echo "</tr>";
 	
 while($row = $result->fetch_assoc()){
+	$quizResult = 8;
 	echo "<tr>";
-			echo "<td>" . "<a href='generated-quiz-view.php?intQuizID=$row[intQuizID]'><button class='quiz-button'>" . $row['strQuizName'] . "</button></a>" . "</td>";
-			echo "<td>" . $row['strTeachersName'] . "</td>";
+		echo "<td>" . "<a href='generated-quiz-view.php?intQuizID=$row[intQuizID]'><button class='quiz-button'>" . $row['strQuizName'] . "</button></a>" . "</td>";
+		echo "<td>" . $row['strTeachersName'] . "</td>";
+		echo "<td class='yes-or-no'>" . "<a href='delete-quiz.php?intQuizID=$row[intQuizID]'><img title='Quiz Results' width='35px' height='35px' src='images/icons/tick-icon.png' class='delete-img'>" . "</img></a>" . "</td>";
+ 		echo "<td>" . $quizResult . "/10" . "</td>";
 	echo "</tr>";
 }
 echo "</table>";
 ?>
+</center>
 
 <footer>
 	<div class="bottom-text">
