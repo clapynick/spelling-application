@@ -16,6 +16,11 @@ include 'mysql-connection.php';
 
 //Start Session
 session_start();
+
+//Getting Variables associated with a session
+$intUserID = $_SESSION['intUserID'];
+global $intUserID;
+
 //Check what accountType the user is
 $strUserName = $_SESSION['strUserName'];
 $sql = "SELECT * FROM userdetails WHERE strUserName='$strUserName'";
@@ -224,12 +229,42 @@ echo "<table class='main-table' style='width:65%'>";
 	echo "</tr>";
 	
 while($row = $result->fetch_assoc()){
-	$quizResult = 8;
 	echo "<tr>";
 		echo "<td>" . "<a href='generated-quiz-view.php?intQuizID=$row[intQuizID]'><button class='quiz-button'>" . $row['strQuizName'] . "</button></a>" . "</td>";
 		echo "<td>" . $row['strTeachersName'] . "</td>";
-		echo "<td class='yes-or-no'>" . "<a href='delete-quiz.php?intQuizID=$row[intQuizID]'><img title='Quiz Results' width='35px' height='35px' src='images/icons/tick-icon.png' class='delete-img'>" . "</img></a>" . "</td>";
- 		echo "<td>" . $quizResult . "/10" . "</td>";
+		echo "<td class='yes-or-no'>" . "<a href='delete-quiz.php?intQuizID=$row[intQuizID]'>";
+		
+		//This is the code that shows either a completed or non completed quiz image
+		$intQuizID = $row['intQuizID'];
+		$sql2 = "SELECT * FROM userquizzes WHERE intQuizID='$intQuizID' AND intUserID='$intUserID'";
+		$result2 = $conn->query($sql2);
+		$num_rows = mysqli_num_rows($result2);
+		if($num_rows > 0){
+			echo "<img title='Completed' width='35px' height='35px' src='images/icons/tick-icon.png' class='delete-img'>" . "</img></a>" . "</td>";
+		} else if($num_rows < 1){
+			echo "<img title='Not Completed' width='39px' height='39px' src='images/icons/delete-icon.png' class='cross-img'>" . "</img></a>" . "</td>";
+		} else {
+			echo "broken script";
+		}
+		
+		//This will do the scores on the side out of 15 for completed quizzes
+		$sql2 = "SELECT * FROM userquizzes WHERE intQuizID='$intQuizID' AND intUserID='$intUserID'";
+		$result2 = $conn->query($sql2);
+		while($row2 = $result2->fetch_assoc()){
+			$j = 0;
+			for($i = 1; $i < 16; $i++){
+				if($row2['intQuestion' . $i] == "1"){
+					$j++;
+				}
+			}
+			echo "<td>" . $j . "/15" . "</td>";
+		}
+		
+		if($num_rows <= 0){
+			echo "<td>" . "N/A" . "</td>";
+		}
+		
+		
 	echo "</tr>";
 }
 echo "</table>";
