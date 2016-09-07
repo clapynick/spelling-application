@@ -209,7 +209,7 @@ if($_POST){
 	/* Footer Section */ 
 	footer .bottom-text {
 		background-color: rgba(100, 100, 100, 0.5);
-		margin-top: 305px;
+		margin-top: 311px;
 		height: 93px;
 	}
 	

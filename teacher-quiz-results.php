@@ -1,9 +1,10 @@
+
 <!-- 
 
-	File: 
+	File: teacher-quiz-results.php
 	Author: Ben Tegoni
 	Description:
-	
+	Displays the teachers view of the results that students have submitted.
 
 -->
 
@@ -13,7 +14,9 @@
 // Include Statements to easily call files
 include 'mysql-connection.php';
 
+//Start Session
 session_start();
+
 //Check what accountType the user is
 $strUserName = $_SESSION['strUserName'];
 $sql = "SELECT * FROM userdetails WHERE strUserName='$strUserName'";
@@ -27,6 +30,7 @@ if($strUserName != null){
 			header("Location: /student-login-page.php");
 			break;
 		} else {
+			//If a user isn't logged in they will be redirected home
 			header("Location: /index.php");
 		}
 	}
@@ -34,48 +38,14 @@ if($strUserName != null){
 	header("Location: /index.php");
 }
 
-//Function to confirm the deletion of the quiz
-function deleteQuizConfirm($conn){
-	deleteQuiz($conn);
-}
-
-//Function thats called to delete an entire quiz
-function deleteQuiz($conn){
-	global $intQuizID;
-	include 'mysql-connection.php';
-	
-	$sql = "DELETE FROM quizdetails WHERE intQuizID='$intQuizID'";
-	if ($conn->query($sql) === TRUE) {
-		echo "Record deleted successfully";
-		header ('Location: /teacher-login-page.php');
-	} else {
-		echo "Error deleting record: " . $conn->error;
-	}
-	
-	//Delete Info In userquizzes
-	$sql = "DELETE FROM userquizzes WHERE intQuizID='$intQuizID'";
-	if ($conn->query($sql) === TRUE) {
-		echo "Record deleted successfully";
-		header ('Location: /teacher-login-page.php');
-	} else {
-		echo "Error deleting record: " . $conn->error;
-	}
-}
-
-//Check to see if the correct data will be present to perform the action
 if(isset($_GET['intQuizID'])){
 	$intQuizID = $_GET['intQuizID'];
-} else {
-	header ('Location: /teacher-login-page.php');
 }
 
-//Check to see if the cofirm box has been used
-if(isset($_POST['yes'])){
-	$intQuizID = $_GET['intQuizID'];
-	deleteQuizConfirm($conn);
-} else if(isset($_POST['no'])){
-	header ('Location: /teacher-login-page.php');
-}
+
+
+
+
 
 ?>
 
@@ -84,7 +54,7 @@ if(isset($_POST['yes'])){
 <head>
 
 <meta charset="utf-8">
-<title>Delete Quiz Function (delete-quiz.php)</title>
+<title>Teacher Quiz Results (teacher-quiz-results.php)</title>
 
 <!-- USEFUL LINKS. EXPENDABLE -->
 <!-- http://www.w3schools.com/cssref/ - CSS Code References -->
@@ -104,7 +74,7 @@ if(isset($_POST['yes'])){
 	/* Body Container */
 	body {
 		background-image: url(images/backgrounds/solid-light-blue-hd-wallpaper.jpg);
-		background-repeat: repeat;
+		background-repeat: no-repeat;
 		background-size: cover;
 		height: 60%;
 		width: 100%;
@@ -135,7 +105,7 @@ if(isset($_POST['yes'])){
 	/* Footer Section */ 
 	footer .bottom-text {
 		background-color: rgba(100, 100, 100, 0.5);
-		margin-top: 320px;
+		margin-top: 287px;
 		height: 93px;
 	}
 	
@@ -144,23 +114,25 @@ if(isset($_POST['yes'])){
 		text-align: center;
 	}
 	
-	/* Confirm Box Area */
-	.confirm-delete-box {
-		width: 600px;
-		height: 250px;
-		border-radius: 15px;
-		background-color: rgba(255, 255, 255, 0.3);
+	/* Home Button Customisation */
+	.home-button img {
+		border: 0px solid red;
+		margin-left: 1435px;
+		margin-top: -42px;
 	}
 	
-	p.delete-confirm {
-		font-size: 22px;
+	.home-button img:hover {
+		opacity: 0.7;
 	}
 	
-	input {
-		width: 110px;
-		height: 50px;
+	/* Main Tabs Config */
+	.main-tabs ul {
 	}
-
+	
+	.tabs-area {
+		background-color: rgba(96, 96, 96, 	1.00);
+		border-radius: 0px;
+	}
 	
 </style>
 
@@ -175,24 +147,25 @@ if(isset($_POST['yes'])){
 	</div>
 </center>
 
-<br>
-<br>
-<hr style='width:60%'></hr>
+<div class="home-button">
+	<a href="admin-login-page.php" title="Home Page"><img src="images/icons/home-icon.png" alt="Home Icon" height="50" width="50"></a>
+</div>
 
-<center>
-	<div class="confirm-delete-box">
-		<br>
-		<br>
-		<br>
-		<br>
-		<p class="delete-confirm">Are you sure you would like to delete quiz <?PHP echo " $intQuizID";?>?</p>
-		<br>
-		<form method="post">
-			<input type="submit" value="Yes" name="yes" class="btn btn-success"></input>
-			<input type="submit" value="No" name="no" class="btn btn-danger"></input>
-		</form>
-	</div>
-<center>
+<div class="main-class">
+<br />
+<br />
+	<nav class="tabs-area navbar navbar-inverse navbar-justified">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<a class="navbar-brand" href="admin-login-page.php"><span style="color: white">Resources</span><span style="color: white">2</span><span style="color: rgba(82, 82, 255, 1.0);">Go</span></a>
+			</div>
+			<ul class="nav navbar-nav pull-right">
+				<li class="active"><a href="student-login-page.php">Home</a></li>
+				<li><a onMouseOver="this.style.color='#BDC3C7'" onMouseOut="this.style.color='white'" style="color: white" href="logOutScript.php">Sign Out</a></li>
+			</ul>
+		</div>
+	</nav>
+</div>
 
 <footer>
 	<div class="bottom-text">

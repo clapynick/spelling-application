@@ -266,7 +266,7 @@ if($_GET){
 </center>
 
 <div class="home-button">
-	<a href="teacher-login-page.php" title="Home Page"><img src="images/icons/home-icon.png" alt="Home Icon" height="50" width="50"></a>
+	<a href="admin-login-page.php" title="Home Page"><img src="images/icons/home-icon.png" alt="Home Icon" height="50" width="50"></a>
 </div>
 
 <div class="main-class">
@@ -326,7 +326,7 @@ while($row = $result->fetch_assoc()){
 	echo "<tr>";
 			echo "<td>" . "<a href='generated-quiz-view.php?intQuizID=$row[intQuizID]'><button class='quiz-button'>" . $row['strQuizName'] . "</button></a>" . "</td>";
 			echo "<td>" . $row['strTeachersName'] . "</td>";
-			echo "<td class='quiz-results'>" . "<a href='delete-quiz.php?intQuizID=$row[intQuizID]'><img title='Quiz Results' width='35px' height='35px' src='images/icons/results-icon.png' class='delete-img'>" . "</img></a>" . "</td>";
+			echo "<td class='quiz-results'>" . "<a href='teacher-quiz-results.php?intQuizID=$row[intQuizID]'><img title='Quiz Results' width='35px' height='35px' src='images/icons/results-icon.png' class='delete-img'>" . "</img></a>" . "</td>";
 			echo "<td class='delete-quiz'>" . "<a href='delete-quiz.php?intQuizID=$row[intQuizID]'><img title='Delete Quiz' width='35px' height='35px' src='images/icons/trash-icon.png' class='delete-img'>" . "</img></a>" . "</td>";
 	echo "</tr>";
 }

@@ -185,7 +185,7 @@ if(isset($_POST['submit'])){
 	/* Footer Section */ 
 	footer .bottom-text {
 		background-color: rgba(100, 100, 100, 0.5);
-		margin-top: 225px;
+		margin-top: 231px;
 		height: 93px;
 	}
 	

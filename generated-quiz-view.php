@@ -95,13 +95,13 @@ function checkResults(){
 				}
 			}
 		}
-		//echo "Student for Q $i: $studentAns AND Correct for Q $i: $correctAns <br />";
 	}
 }
 
 if($_POST){
     if(isset($_POST['submit'])){
         checkResults();
+		header("Location: /completed-quiz.php");
     }
 }
 
