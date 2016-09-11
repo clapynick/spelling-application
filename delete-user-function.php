@@ -1,9 +1,9 @@
 <!-- 
 
-	File: completed-quiz.php
+	File: 
 	Author: Ben Tegoni
 	Description:
-	The page when a person completes a quiz.
+	
 
 -->
 
@@ -21,10 +21,13 @@ $result = $conn->query($sql);
 
 if($strUserName != null){
 	while($row = $result->fetch_assoc()){
-		if($row["strAccountType"] == 'admin' OR $row["strAccountType"] == 'teacher'){
+		if($row["strAccountType"] == 'admin'){
+			break;
+		} else if($row["strAccountType"] == 'teacher'){
 			header("Location: /teacher-login-page.php");
 			break;
 		} else if($row["strAccountType"] == 'student'){
+			header("Location: /student-login-page.php");
 			break;
 		} else {
 			header("Location: /index.php");
@@ -34,9 +37,47 @@ if($strUserName != null){
 	header("Location: /index.php");
 }
 
+//Function to confirm the deletion of the quiz
+function deleteQuizConfirm($conn){
+	deleteQuiz($conn);
+}
 
-if(isset($_POST['home'])){
-	header("Location: /student-login-page.php");
+//Function thats called to delete an entire quiz
+function deleteQuiz($conn){
+	global $intUserID;
+	include 'mysql-connection.php';
+	
+	$sql = "DELETE FROM userdetails WHERE intUserID='$intUserID'";
+	if ($conn->query($sql) === TRUE) {
+		echo "Record deleted successfully";
+		header ('Location: /admin-delete-user.php');
+	} else {
+		echo "Error deleting record: " . $conn->error;
+	}
+	
+	//Delete Info In userquizzes
+	$sql = "DELETE FROM userquizzes WHERE intUserID='$intUserID'";
+	if ($conn->query($sql) === TRUE) {
+		echo "Record deleted successfully";
+		header ('Location: /admin-delete-user.php');
+	} else {
+		echo "Error deleting record: " . $conn->error;
+	}
+}
+
+//Check to see if the correct data will be present to perform the action
+if(isset($_GET['intUserID'])){
+	$intUserID = $_GET['intUserID'];
+} else {
+	header ('Location: /admin-delete-user.php');
+}
+
+//Check to see if the cofirm box has been used
+if(isset($_POST['yes'])){
+	$intUserID = $_GET['intUserID'];
+	deleteQuizConfirm($conn);
+} else if(isset($_POST['no'])){
+	header ('Location: /admin-delete-user.php');
 }
 
 ?>
@@ -46,7 +87,7 @@ if(isset($_POST['home'])){
 <head>
 
 <meta charset="utf-8">
-<title>Once Completed Quiz Has Been Successful, redirect here (completed-quiz.php)</title>
+<title>Delete Quiz Function (delete-quiz.php)</title>
 
 <!-- USEFUL LINKS. EXPENDABLE -->
 <!-- http://www.w3schools.com/cssref/ - CSS Code References -->
@@ -94,7 +135,7 @@ if(isset($_POST['home'])){
 		font-weight: 700px;
 	}
 	
-	/* Footer Section */ 
+	/* Footer Section */
 	footer {
 		height: 93px;
 		position: absolute;
@@ -115,20 +156,18 @@ if(isset($_POST['home'])){
 	
 	/* Confirm Box Area */
 	.confirm-delete-box {
-		width: 1000px;
+		width: 600px;
 		height: 250px;
 		border-radius: 15px;
 		background-color: rgba(255, 255, 255, 0.3);
-		padding-left: 10%;
-		padding-right: 10%;
 	}
 	
 	p.delete-confirm {
-		font-size: 19px;
+		font-size: 22px;
 	}
 	
 	input {
-		width: 150px;
+		width: 110px;
 		height: 50px;
 	}
 
@@ -156,10 +195,11 @@ if(isset($_POST['home'])){
 		<br>
 		<br>
 		<br>
-		<p class="delete-confirm">Congratulations on completing your quiz. Please return home to view your results or complete more quizzes.</p>
+		<p class="delete-confirm">Are you sure you would like to delete user with ID:  <?PHP echo " $intUserID";?></p>
 		<br>
 		<form method="post">
-			<input type="submit" value="Return Home" name="home" class="btn btn-success"></input>
+			<input type="submit" value="Yes" name="yes" class="btn btn-success"></input>
+			<input type="submit" value="No" name="no" class="btn btn-danger"></input>
 		</form>
 	</div>
 <center>

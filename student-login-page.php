@@ -99,9 +99,16 @@ if($strUserName != null){
 	}
 	
 	/* Footer Section */ 
+	footer {
+		height: 93px;
+		position: absolute;
+		right: 0;
+		bottom: 0;
+		left: 0;
+	}
+	
 	footer .bottom-text {
 		background-color: rgba(100, 100, 100, 0.5);
-		margin-top: 287px;
 		height: 93px;
 	}
 	

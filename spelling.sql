@@ -1,21 +1,3 @@
--- phpMyAdmin SQL Dump
--- version 4.5.1
--- http://www.phpmyadmin.net
---
--- Host: 127.0.0.1
--- Generation Time: Aug 04, 2016 at 02:07 PM
--- Server version: 10.1.13-MariaDB
--- PHP Version: 5.6.20
-
-SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET time_zone = "+00:00";
-
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
-
 --
 -- Database: `spelling`
 --
@@ -29,6 +11,13 @@ SET time_zone = "+00:00";
 CREATE TABLE `codegen` (
   `intGenCode` int(6) NOT NULL COMMENT 'Field that holds the most current code for signing up'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Table specifically for sign up code generation';
+
+--
+-- Dumping data for table `codegen`
+--
+
+INSERT INTO `codegen` (`intGenCode`) VALUES
+(999999);
 
 -- --------------------------------------------------------
 
@@ -95,10 +84,17 @@ CREATE TABLE `quizdetails` (
 
 CREATE TABLE `userdetails` (
   `intUserID` int(4) NOT NULL COMMENT 'Unique Identifier for a User',
-  `strUserName` varchar(8) NOT NULL,
+  `strUserName` varchar(16) NOT NULL,
   `strPass` varchar(16) NOT NULL,
   `strAccountType` varchar(7) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Basic User Details Required for other tables';
+
+--
+-- Dumping data for table `userdetails`
+--
+
+INSERT INTO `userdetails` (`intUserID`, `strUserName`, `strPass`, `strAccountType`) VALUES
+(0, 'TegonBen', 'Donkey42', 'admin');
 
 -- --------------------------------------------------------
 
@@ -124,7 +120,22 @@ CREATE TABLE `userquizzes` (
   `intQuestion12` int(1) NOT NULL,
   `intQuestion13` int(1) NOT NULL,
   `intQuestion14` int(1) NOT NULL,
-  `intQuestion15` int(1) NOT NULL
+  `intQuestion15` int(1) NOT NULL,
+  `strQuestion1` varchar(85) NOT NULL,
+  `strQuestion2` varchar(85) NOT NULL,
+  `strQuestion3` varchar(85) NOT NULL,
+  `strQuestion4` varchar(85) NOT NULL,
+  `strQuestion5` varchar(85) NOT NULL,
+  `strQuestion6` varchar(85) NOT NULL,
+  `strQuestion7` varchar(85) NOT NULL,
+  `strQuestion8` varchar(85) NOT NULL,
+  `strQuestion9` varchar(85) NOT NULL,
+  `strQuestion10` varchar(85) NOT NULL,
+  `strQuestion11` varchar(85) NOT NULL,
+  `strQuestion12` varchar(85) NOT NULL,
+  `strQuestion13` varchar(85) NOT NULL,
+  `strQuestion14` varchar(85) NOT NULL,
+  `strQuestion15` varchar(85) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Results related to the user for each quiz will be stored he.';
 
 --

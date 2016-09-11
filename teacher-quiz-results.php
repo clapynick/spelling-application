@@ -40,11 +40,17 @@ if($strUserName != null){
 
 if(isset($_GET['intQuizID'])){
 	$intQuizID = $_GET['intQuizID'];
+	global $intQuizID;
 }
 
+$sql = "SELECT * FROM quizdetails WHERE intQuizID=$intQuizID";
+$result = $conn->query($sql);
 
-
-
+while($row = $result->fetch_assoc()){
+	$strQuizName = $row['strQuizName'];
+	$strTeachersName = $row['strTeachersName'];
+	global $strQuizName, $strTeachersName;
+}
 
 
 ?>
@@ -103,9 +109,16 @@ if(isset($_GET['intQuizID'])){
 	}
 	
 	/* Footer Section */ 
+	footer {
+		height: 93px;
+		position: absolute;
+		right: 0;
+		bottom: 0;
+		left: 0;
+	}
+	
 	footer .bottom-text {
 		background-color: rgba(100, 100, 100, 0.5);
-		margin-top: 287px;
 		height: 93px;
 	}
 	
@@ -132,6 +145,18 @@ if(isset($_GET['intQuizID'])){
 	.tabs-area {
 		background-color: rgba(96, 96, 96, 	1.00);
 		border-radius: 0px;
+	}
+	
+	p.strQuizName {
+		font-weight: bold;
+		font-size: 50px;
+		text-decoration: underline;
+	}
+	
+	p.strTeachersName {
+		font-weight: bold;
+		font-size: 35px;
+		text-decoration: underline;
 	}
 	
 </style>
@@ -166,6 +191,59 @@ if(isset($_GET['intQuizID'])){
 		</div>
 	</nav>
 </div>
+
+<center>
+<?php
+
+echo "<br/>";
+echo "<hr style='width:80%'>";
+echo "<p class='strQuizName'>" . "Results For: " . $strQuizName . "</p>" . "<p class='strTeachersName'>" . $strTeachersName . "</p>";
+echo "<hr style='width:80%'>";
+echo "<br/>";
+
+echo "<table class='main-table' style='width:65%'>";
+	echo "<tr>";
+		echo "<th style='color=black'>" . "UserID" . "</th>";
+		echo "<th style='color=black'>" . "UserName" . "</th>";;
+		echo "<th style='color=black'>" . "Score /15". "</th>";
+	echo "</tr>";
+
+while($row = $result->fetch_assoc()){
+	
+	$sql = "SELECT * FROM userquizzes WHERE intQuizID=$intQuizID";
+	$result = $conn->query($sql);
+	$intUserID = $row['intUserID'];
+
+	$sql2 = "SELECT * FROM userdetails WHERE intUserID='$intUserID'";
+	$result2 = $conn->query($sql2);
+	$strUserName = $row['strUserName'];
+	
+	echo "<tr>";
+		echo "<td>" . $intUserID . "</td>";
+		echo "<td>" . $strUserName . "</td>";
+		
+		//This will do the scores on the side out of 15 for completed quizzes
+		$sql2 = "SELECT * FROM userquizzes WHERE intQuizID='$intQuizID' AND intUserID='$intUserID'";
+		$result2 = $conn->query($sql2);
+		while($row2 = $result2->fetch_assoc()){
+			$j = 0;
+			for($i = 1; $i < 16; $i++){
+				if($row2['intQuestion' . $i] == "1"){
+					$j++;
+				}
+			}
+			echo "<td>" . $j . "/15" . "</td>";
+		}
+		
+		if($num_rows <= 0){
+			echo "<td>" . "N/A" . "</td>";
+		}
+	echo "</tr>";
+}
+
+echo "</table>";
+?>
+</center>
 
 <footer>
 	<div class="bottom-text">

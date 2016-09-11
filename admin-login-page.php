@@ -141,9 +141,16 @@ if($_GET){
 	}
 	
 	/* Footer Section */ 
+	footer {
+		height: 93px;
+		position: absolute;
+		right: 0;
+		bottom: 0;
+		left: 0;
+	}
+	
 	footer .bottom-text {
 		background-color: rgba(100, 100, 100, 0.5);
-		margin-top: 287px;
 		height: 93px;
 	}
 	
@@ -280,9 +287,9 @@ if($_GET){
 			<ul class="nav navbar-nav pull-right">
 				<li class="active"><a href="admin-login-page.php">Home</a></li>
 				<li><a onMouseOver="this.style.color='#BDC3C7'" onMouseOut="this.style.color='white'" style="color: white" href="create-quiz.php">Create Quiz</a></li>
-				<li><a onMouseOver="this.style.color='#BDC3C7'" onMouseOut="this.style.color='white'" style="color: white" href="#">Create User</a></li>
-				<li><a onMouseOver="this.style.color='#BDC3C7'" onMouseOut="this.style.color='white'" style="color: white" href="#">Delete User</a></li>
-				<li><a onMouseOver="this.style.color='#BDC3C7'" onMouseOut="this.style.color='white'" style="color: white" href="#">Edit User</a></li>
+				<li><a onMouseOver="this.style.color='#BDC3C7'" onMouseOut="this.style.color='white'" style="color: white" href="admin-create-user.php">Create User</a></li>
+				<li><a onMouseOver="this.style.color='#BDC3C7'" onMouseOut="this.style.color='white'" style="color: white" href="admin-delete-user.php">Delete User</a></li>
+				<li><a onMouseOver="this.style.color='#BDC3C7'" onMouseOut="this.style.color='white'" style="color: white" href="admin-edit-user.php">Edit User</a></li>
 				<li><a onMouseOver="this.style.color='#BDC3C7'" onMouseOut="this.style.color='white'" style="color: white" href="logOutScript.php">Sign Out</a></li>
 			</ul>
 		</div>

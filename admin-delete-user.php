@@ -1,10 +1,10 @@
 
 <!-- 
 
-	File: teacher-login-page.php
+	File: admin-delete-user.php
 	Author: Ben Tegoni
 	Description:
-	The first page an teacher account is greeted by.
+	The page an admin will visit to delete users.
 
 -->
 
@@ -16,7 +16,6 @@ include 'mysql-connection.php';
 
 //Start Session
 session_start();
-
 //Check what accountType the user is
 $strUserName = $_SESSION['strUserName'];
 $sql = "SELECT * FROM userdetails WHERE strUserName='$strUserName'";
@@ -25,9 +24,9 @@ $result = $conn->query($sql);
 if($strUserName != null){
 	while($row = $result->fetch_assoc()){
 		if($row["strAccountType"] == 'admin'){
-			header("Location: /admin-login-page.php");
 			break;
 		} else if($row["strAccountType"] == 'teacher'){
+			header("Location: /teacher-login-page.php");
 			break;
 		} else if($row["strAccountType"] == 'student'){
 			header("Location: /student-login-page.php");
@@ -81,7 +80,7 @@ function generateCode(){
 if($_GET){
     if(isset($_GET['gencode'])){
         generateCode();
-		header("Location: /teacher-login-page.php");
+		header("Location: /admin-delete-user.php");
 		exit();
     }
 }
@@ -119,7 +118,6 @@ if($_GET){
 		background-attachment: fixed;
 		width: 100%;
 		margin: auto;
-		background-repeat: repeat;
 	}
 	
 	/* Title Text Box Config */
@@ -260,6 +258,7 @@ if($_GET){
 	}
 	
 	
+	
 </style>
 
 </head>
@@ -274,7 +273,7 @@ if($_GET){
 </center>
 
 <div class="home-button">
-	<a href="teacher-login-page.php" title="Home Page"><img src="images/icons/home-icon.png" alt="Home Icon" height="50" width="50"></a>
+	<a href="admin-login-page.php" title="Home Page"><img src="images/icons/home-icon.png" alt="Home Icon" height="50" width="50"></a>
 </div>
 
 <div class="main-class">
@@ -286,8 +285,11 @@ if($_GET){
 				<a class="navbar-brand" href="admin-login-page.php"><span style="color: white">Resources</span><span style="color: white">2</span><span style="color: rgba(82, 82, 255, 1.0);">Go</span></a>
 			</div>
 			<ul class="nav navbar-nav pull-right">
-				<li class="active"><a href="teacher-login-page.php">Home</a></li>
+				<li><a onMouseOver="this.style.color='#BDC3C7'" onMouseOut="this.style.color='white'" style="color: white" href="admin-login-page.php">Home</a></li>
 				<li><a onMouseOver="this.style.color='#BDC3C7'" onMouseOut="this.style.color='white'" style="color: white" href="create-quiz.php">Create Quiz</a></li>
+				<li><a onMouseOver="this.style.color='#BDC3C7'" onMouseOut="this.style.color='white'" style="color: white" href="admin-create-user.php">Create User</a></li>
+				<li class="active"><a onMouseOut="this.style.color='white'" style="color: white" href="admin-delete-user.php">Delete User</a></li>
+				<li><a onMouseOver="this.style.color='#BDC3C7'" onMouseOut="this.style.color='white'" style="color: white" href="admin-edit-user.php">Edit User</a></li>
 				<li><a onMouseOver="this.style.color='#BDC3C7'" onMouseOut="this.style.color='white'" style="color: white" href="logOutScript.php">Sign Out</a></li>
 			</ul>
 		</div>
@@ -315,30 +317,32 @@ if($_GET){
 
 <center>
 <?PHP
-$sql = "SELECT * FROM quizdetails";
+$sql = "SELECT * FROM userdetails";
 $result = $conn->query($sql);
 
 echo "<br />";
 echo "<table class='main-table' style='width:65%'>";
 	echo "<tr>";
-		echo "<th style='color=black'>" . "Quiz Name" . "</th>";
-		echo "<th style='color=black'>" . "Teachers Name" . "</th>";
-		echo "<th style='color=black'>" . "Quiz Results". "</th>";
-		echo "<th style='color=black background-color=transparent'>" . "Delete Quiz" ."</th>";
+		echo "<th style='color=black'>" . "User Name" . "</th>";
+		echo "<th style='color=black'>" . "UserID" . "</th>";
+		echo "<th style='color=black'>" . "Account Type". "</th>";
+		echo "<th style='color=black background-color=transparent'>" . "Delete User" ."</th>";
 	echo "</tr>";
 	
 while($row = $result->fetch_assoc()){
 	echo "<tr>";
-			echo "<td>" . "<a href='generated-quiz-view.php?intQuizID=$row[intQuizID]'><button class='quiz-button'>" . $row['strQuizName'] . "</button></a>" . "</td>";
-			echo "<td>" . $row['strTeachersName'] . "</td>";
-			echo "<td class='quiz-results'>" . "<a href='delete-quiz.php?intQuizID=$row[intQuizID]'><img title='Quiz Results' width='35px' height='35px' src='images/icons/results-icon.png' class='delete-img'>" . "</img></a>" . "</td>";
-			echo "<td class='delete-quiz'>" . "<a href='delete-quiz.php?intQuizID=$row[intQuizID]'><img title='Delete Quiz' width='35px' height='35px' src='images/icons/trash-icon.png' class='delete-img'>" . "</img></a>" . "</td>";
+			echo "<td href='generated-quiz-view.php?intUserID=$row[strUserName]'>" . $row['strUserName'] . "</td>";
+			echo "<td>" . $row['intUserID'] . "</td>";
+			echo "<td class='quiz-results'>" . $row['strAccountType'] . "</td>";
+			echo "<td class='delete-user'>" . "<a href='delete-user-function.php?intUserID=$row[intUserID]'><img title='Delete Quiz' width='35px' height='35px' src='images/icons/trash-icon.png' class='delete-img'>" . "</img></a>" . "</td>";
 	echo "</tr>";
 }
 echo "</table>";
 ?>
 </center>
 
+</br>
+</br>
 <footer>
 	<div class="bottom-text">
 		<center><p>Copyright © Resources2Go 2013</p></center>
