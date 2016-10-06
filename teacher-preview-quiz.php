@@ -1,10 +1,10 @@
 
 <!-- 
 
-	File: teacher-quiz-results.php
+	File: teacher-preview-quiz.php
 	Author: Ben Tegoni
 	Description:
-	Displays the teachers view of the results that students have submitted.
+	Shows the teacher what the page will look like once created.
 
 -->
 
@@ -14,33 +14,31 @@
 // Include Statements to easily call files
 include 'mysql-connection.php';
 
+if(isset($_GET['intQuizID'])){
+	$intQuizID = $_GET['intQuizID'];
+}
+
 //Start Session
 session_start();
 
 //Check what accountType the user is
+$intUserID = $_SESSION['intUserID'];
 $strUserName = $_SESSION['strUserName'];
 $sql = "SELECT * FROM userdetails WHERE strUserName='$strUserName'";
 $result = $conn->query($sql);
-
+//If the username exsists than continue, if it equals null go into the else statement and redirect to the login page
 if($strUserName != null){
 	while($row = $result->fetch_assoc()){
 		if($row["strAccountType"] == 'admin' OR $row["strAccountType"] == 'teacher'){
 			break;
 		} else if($row["strAccountType"] == 'student'){
-			header("Location: /student-login-page.php");
-			break;
+			header("Location: /teacher-login-page.php");
 		} else {
-			//If a user isn't logged in they will be redirected home
 			header("Location: /index.php");
 		}
 	}
 } else {
 	header("Location: /index.php");
-}
-
-if(isset($_GET['intQuizID'])){
-	$intQuizID = $_GET['intQuizID'];
-	global $intQuizID;
 }
 
 $sql = "SELECT * FROM quizdetails WHERE intQuizID=$intQuizID";
@@ -49,9 +47,15 @@ $result = $conn->query($sql);
 while($row = $result->fetch_assoc()){
 	$strQuizName = $row['strQuizName'];
 	$strTeachersName = $row['strTeachersName'];
-	global $strQuizName, $strTeachersName;
+	$strQuestions = $row;
+	
+	global $strQuizName, $strTeachersName, $strQuestions;
 }
 
+//Go Back Button Function
+if(isset($_POST['goback'])){
+	header("Location: /teacher-login-page.php");
+}
 
 ?>
 
@@ -60,7 +64,7 @@ while($row = $result->fetch_assoc()){
 <head>
 
 <meta charset="utf-8">
-<title>Teacher Quiz Results (teacher-quiz-results.php)</title>
+<title>Generated Quiz View (generated-quiz-view.php)</title>
 
 <!-- USEFUL LINKS. EXPENDABLE -->
 <!-- http://www.w3schools.com/cssref/ - CSS Code References -->
@@ -139,12 +143,22 @@ while($row = $result->fetch_assoc()){
 	}
 	
 	/* Main Tabs Config */
-	.main-tabs ul {
+	.main-class {
 	}
 	
 	.tabs-area {
 		background-color: rgba(96, 96, 96, 	1.00);
 		border-radius: 0px;
+	}
+	
+	/* Radio Buttons Styling */
+	form {
+		font-size: 22px;
+	}
+	
+	h3 {
+		font-weight: bold;
+		font-size: 30;
 	}
 	
 	p.strQuizName {
@@ -159,13 +173,15 @@ while($row = $result->fetch_assoc()){
 		text-decoration: underline;
 	}
 	
-	tr:nth-child(even){
-		background-color: white;
+	.back-button input {
+		width: 500px;
+		border-radius: 3px;
 	}
 	
-	th, td {
-		padding: 8px;
-		width: 170px;
+	input[type=radio] {
+		border: 0px;
+		width: 22px;
+		height: 22px;
 	}
 	
 </style>
@@ -182,7 +198,7 @@ while($row = $result->fetch_assoc()){
 </center>
 
 <div class="home-button">
-	<a href="admin-login-page.php" title="Home Page"><img src="images/icons/home-icon.png" alt="Home Icon" height="50" width="50"></a>
+	<a href="student-login-page.php" title="Home Page"><img src="images/icons/home-icon.png" alt="Home Icon" height="50" width="50"></a>
 </div>
 
 <div class="main-class">
@@ -195,8 +211,7 @@ while($row = $result->fetch_assoc()){
 			</div>
 			<ul class="nav navbar-nav pull-right">
 				<li class="active"><a href="student-login-page.php">Home</a></li>
-				<li class="create-quiz"><a onMouseOver="this.style.color='#BDC3C7'" onMouseOut="this.style.color='white'" style="color: white" href="create-quiz.php">Create Quiz</a></li>
-				<li class="sign-out"><a onMouseOver="this.style.color='#BDC3C7'" onMouseOut="this.style.color='white'" style="color: white" href="logOutScript.php">Sign Out</a></li>
+				<li><a onMouseOver="this.style.color='#BDC3C7'" onMouseOut="this.style.color='white'" style="color: white" href="logOutScript.php">Sign Out</a></li>
 			</ul>
 		</div>
 	</nav>
@@ -207,52 +222,55 @@ while($row = $result->fetch_assoc()){
 
 echo "<br/>";
 echo "<hr style='width:80%'>";
-echo "<p class='strQuizName'>" . "Results For: " . $strQuizName . "</p>" . "<p class='strTeachersName'>" . $strTeachersName . "</p>";
+echo "<p class='strQuizName'>" . "Preview of Quiz: " . $strQuizName . "</p>" . "<p class='strTeachersName'>" . $strTeachersName . "</p>";
 echo "<hr style='width:80%'>";
 echo "<br/>";
 
-echo "<table class='main-table' style='width:65%'>";
-	echo "<tr>";
-		echo "<th style='color=black'>" . "UserID" . "</th>";
-		echo "<th style='color=black'>" . "UserName" . "</th>";;
-		echo "<th style='color=black'>" . "Score /15". "</th>";
-	echo "</tr>";
-	
-	$sql = "SELECT * FROM userquizzes WHERE intQuizID=$intQuizID";
-	$result = $conn->query($sql);
-	
-while($row = $result->fetch_assoc()){
-	$intUserID = $row['intUserID'];
-	
-	$sql2 = "SELECT * FROM userdetails WHERE intUserID='$intUserID'";
-	$result2 = $conn->query($sql2);
-	while($row_2 = $result2->fetch_assoc()){
-		$strUserName = $row_2['strUserName'];
-		
-		echo "<tr>";
-		echo "<td>" . $intUserID . "</td>";
-		echo "<td>" . $strUserName . "</td>";
-		
-		//This will do the scores on the side out of 15 for completed quizzes
-		$sql3 = "SELECT * FROM userquizzes WHERE intQuizID='$intQuizID' AND intUserID='$intUserID'";
-		$result3 = $conn->query($sql3);
-		while($row_3 = $result3->fetch_assoc()){
-			$j = 0;	
-			for($i = 1; $i < 16; $i++){
-				if($row_3['intQuestion' . $i] == "1"){
-					$j++;
-				}
-			}
-			echo "<td>" . $j . "/15" . "</td>";
-		}
-	echo "</tr>";
+echo "<form class='1' method='post'>";
+
+for($i = 1; $i < 16; $i++){
+	$case = rand(1, 3);
+	//Randomise the way radio buttons are displayed for word 1
+	if ($case == 1) {
+		echo "<h3>Question $i - </h3>";
+		echo "<input type='radio' value='" . $strQuestions["strQuestion" . $i . "_r"] . "' name='$i' id='$i.1'>" . $strQuestions['strQuestion' . $i . '_r'] . "</input><br>";
+		echo "<input type='radio' value='" . $strQuestions["strQuestion" . $i . "_w1"] . "' name='$i' id='$i.2'>" . $strQuestions['strQuestion' . $i . '_w1'] . "</input>" . "<br>";
+		echo "<input type='radio' value='" . $strQuestions["strQuestion" . $i . "_w2"] . "' name='$i' id='$i.3'>" . $strQuestions['strQuestion' . $i . '_w2'] . "</input>" . "<br>";
+		echo "<br/>";
+		echo "<hr style='width:60%'>";
+		echo "<br/>";
+	} elseif ($case == 2) {
+		echo "<h3>Question $i - </h3>";
+		echo "<input type='radio' value='" . $strQuestions["strQuestion" . $i . "_w2"] . "' name='$i' id='$i.1'>" . $strQuestions['strQuestion' . $i . '_w2'] . "</input>" . "<br>";
+		echo "<input type='radio' value='" . $strQuestions["strQuestion" . $i . "_r"] . "' name='$i' id='$i.2'>" . $strQuestions['strQuestion' . $i . '_r'] . "</input>" . "<br>";
+		echo "<input type='radio'  value='" . $strQuestions["strQuestion" . $i . "_w1"] . "' name='$i' id='$i.3'>" . $strQuestions['strQuestion' . $i . '_w1'] . "</input>" . "<br>";
+		echo "<br/>";
+		echo "<hr style='width:60%'>";
+		echo "<br/>";
+	} else {
+		echo "<h3>Question $i - </h3>";
+		echo "<input type='radio' value='" . $strQuestions["strQuestion" . $i . "_w1"] . "' name='$i' id='$i.1'>" . $strQuestions['strQuestion' . $i . '_w1'] . "</input>" . "<br>";
+		echo "<input type='radio' value='" . $strQuestions["strQuestion" . $i . "_w2"] . "' name='$i' id='$i.2'>" . $strQuestions['strQuestion' . $i . '_w2'] . "</input>" . "<br>";
+		echo "<input type='radio' value='" . $strQuestions["strQuestion" . $i . "_r"] . "' name='$i' id='$i.3'>" . $strQuestions['strQuestion' . $i . '_r'] . "</input>" . "<br>";
+		echo "<br/>";
+		echo "<hr style='width:60%'>";
+		echo "<br/>";
 	}
 }
 
-echo "</table>";
 ?>
-</center>
 
+	<div class="back-button">
+		<br />
+		<input type="submit" name="goback" class="btn btn-lg btn-default" value="Go Back" />
+		<br />
+	</div>
+</form>
+			
+<center>
+
+</br>
+</br>
 <footer>
 	<div class="bottom-text">
 		<center><p>Copyright © Resources2Go 2013</p></center>

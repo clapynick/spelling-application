@@ -1,9 +1,9 @@
 <!-- 
 
-	File: 
+	File: delete-quiz.php
 	Author: Ben Tegoni
 	Description:
-	
+	The delete quiz function for deleting a quiz for a teacher or admin
 
 -->
 
@@ -18,14 +18,18 @@ session_start();
 $strUserName = $_SESSION['strUserName'];
 $sql = "SELECT * FROM userdetails WHERE strUserName='$strUserName'";
 $result = $conn->query($sql);
-
+//If the username exsists than continue, if it equals null go into the else statement and redirect to the login page
 if($strUserName != null){
+	//Fetch the associated data
 	while($row = $result->fetch_assoc()){
+		//If the account type is admin or teacher than do nothing
 		if($row["strAccountType"] == 'admin' OR $row["strAccountType"] == 'teacher'){
 			break;
+		//if the account type is student redirect to student landing page
 		} else if($row["strAccountType"] == 'student'){
 			header("Location: /student-login-page.php");
 			break;
+		//If there is no account type the account doesnt exists so redirect to login page
 		} else {
 			header("Location: /index.php");
 		}
@@ -44,6 +48,7 @@ function deleteQuiz($conn){
 	global $intQuizID;
 	include 'mysql-connection.php';
 	
+	//Query the databsae from quizdetails table and for the row where the intQuizID is equal to the intQuizID variable
 	$sql = "DELETE FROM quizdetails WHERE intQuizID='$intQuizID'";
 	if ($conn->query($sql) === TRUE) {
 		echo "Record deleted successfully";
@@ -72,7 +77,9 @@ if(isset($_GET['intQuizID'])){
 //Check to see if the cofirm box has been used
 if(isset($_POST['yes'])){
 	$intQuizID = $_GET['intQuizID'];
+	//Call deleteQuizCondirm funciton
 	deleteQuizConfirm($conn);
+//If no is pressed than redirect to teacher landing page
 } else if(isset($_POST['no'])){
 	header ('Location: /teacher-login-page.php');
 }

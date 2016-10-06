@@ -26,8 +26,9 @@ $intUserID = $_SESSION['intUserID'];
 $strUserName = $_SESSION['strUserName'];
 $sql = "SELECT * FROM userdetails WHERE strUserName='$strUserName'";
 $result = $conn->query($sql);
-
+//If the username exsists than continue, if it equals null go into the else statement and redirect to the login page
 if($strUserName != null){
+	//Fetch associated data with the row of the query
 	while($row = $result->fetch_assoc()){
 		if($row["strAccountType"] == 'admin' OR $row["strAccountType"] == 'teacher'){
 			header("Location: /teacher-login-page.php");
@@ -54,9 +55,7 @@ while($row = $result->fetch_assoc()){
 
 //Function that checks the results entered for the quiz.
 function checkResults(){
-	global $conn;
-	//echo "function called correctly";
-	
+	global $conn;	
 	for($i=1; $i < 16; $i++){
 		global $intUserID, $intQuizID, $strQuizName;
 		$studentAns = $_POST[$i];
@@ -163,7 +162,7 @@ if($_POST){
 	/* Footer Section */ 
 	footer {
 		height: 93px;
-		position: absolute;
+		position: relative;
 		right: 0;
 		bottom: 0;
 		left: 0;

@@ -18,23 +18,31 @@ include 'mysql-connection.php';
 session_start();
 //Check what accountType the user is
 $strUserName = $_SESSION['strUserName'];
+//Query the database for the username being equal the past username
 $sql = "SELECT * FROM userdetails WHERE strUserName='$strUserName'";
 $result = $conn->query($sql);
 
+//if the strUserName exsist 
 if($strUserName != null){
+	//Get the associated data
 	while($row = $result->fetch_assoc()){
+		//If the strAccount type equals admin, do nothing.
 		if($row["strAccountType"] == 'admin'){
 			break;
+			//If the strAccount type equals teacher redirect to the teacher landing page
 		} else if($row["strAccountType"] == 'teacher'){
 			header("Location: /teacher-login-page.php");
 			break;
+			//If the strAccount type equals student redirect to the student landing page
 		} else if($row["strAccountType"] == 'student'){
 			header("Location: /student-login-page.php");
 			break;
+		//If the strAccount type equals nothing than redirect to login page
 		} else {
 			header("Location: /index.php");
 		}
 	}
+	//If the username equals nothing than redirect to the login page
 } else {
 	header("Location: /index.php");
 }
@@ -48,17 +56,21 @@ function generateCode(){
 	$sql = "SELECT * FROM codegen";
 	$result = $conn->query($sql);
 	$row = mysqli_fetch_assoc($result);
+	//Assign a new random number to $numberA between 100000 and 999999
 	$numberA = rand(100000, 999999);
 	echo("$numberA : Current numberA <br />");
+	//Set the current code to $numberB
 	$numberB = $row['intGenCode'];
 	echo($numberB);
 	echo " : Current numberB <br />";
 
+	//If the numbers equal eachother find another number until they dont
 	while($numberA == $numberB){
 		$numberA = rand(100000, 999999);
 		echo("$numberA : New Selected numberA");
 	} 
 	
+	//Then delete the current number if the two numbers dont equal eachother
 	if($numberA != $numberB){
 		$sql2 = "DELETE FROM codegen WHERE intGenCode";
 		if ($conn->query($sql2) === TRUE) {
@@ -67,6 +79,7 @@ function generateCode(){
 			echo "<br /> Error deleting record <br />";
 		}
 		
+		//Insert where the old number was with the new number
 		$sql3 = "INSERT INTO codegen VALUES ('$numberA')";
 		if ($conn->query($sql3) === TRUE) {
 			echo "New record created successfully <br />";
@@ -79,6 +92,7 @@ function generateCode(){
 //Check if the generate code button has been pressed
 if($_GET){
     if(isset($_GET['gencode'])){
+		//Call the generateCode function
         generateCode();
 		header("Location: /admin-delete-user.php");
 		exit();
@@ -143,7 +157,7 @@ if($_GET){
 	/* Footer Section */ 
 	footer {
 		height: 93px;
-		position: absolute;
+		position: relative;
 		right: 0;
 		bottom: 0;
 		left: 0;
@@ -289,7 +303,7 @@ if($_GET){
 				<li><a onMouseOver="this.style.color='#BDC3C7'" onMouseOut="this.style.color='white'" style="color: white" href="create-quiz.php">Create Quiz</a></li>
 				<li><a onMouseOver="this.style.color='#BDC3C7'" onMouseOut="this.style.color='white'" style="color: white" href="admin-create-user.php">Create User</a></li>
 				<li class="active"><a onMouseOut="this.style.color='white'" style="color: white" href="admin-delete-user.php">Delete User</a></li>
-				<li><a onMouseOver="this.style.color='#BDC3C7'" onMouseOut="this.style.color='white'" style="color: white" href="admin-edit-user.php">Edit User</a></li>
+				<!--<li><a onMouseOver="this.style.color='#BDC3C7'" onMouseOut="this.style.color='white'" style="color: white" href="admin-edit-user.php">Edit User</a></li>-->
 				<li><a onMouseOver="this.style.color='#BDC3C7'" onMouseOut="this.style.color='white'" style="color: white" href="logOutScript.php">Sign Out</a></li>
 			</ul>
 		</div>
@@ -317,9 +331,11 @@ if($_GET){
 
 <center>
 <?PHP
+//Query the database for all data in the table userdetails
 $sql = "SELECT * FROM userdetails";
 $result = $conn->query($sql);
 
+//Display the table using html but echoing that html using php
 echo "<br />";
 echo "<table class='main-table' style='width:65%'>";
 	echo "<tr>";
@@ -329,11 +345,13 @@ echo "<table class='main-table' style='width:65%'>";
 		echo "<th style='color=black background-color=transparent'>" . "Delete User" ."</th>";
 	echo "</tr>";
 	
+//While the data has not all been displayed continue printing more data in a table with the associated buttons and useranames in different table data.
 while($row = $result->fetch_assoc()){
 	echo "<tr>";
 			echo "<td href='generated-quiz-view.php?intUserID=$row[strUserName]'>" . $row['strUserName'] . "</td>";
 			echo "<td>" . $row['intUserID'] . "</td>";
 			echo "<td class='quiz-results'>" . $row['strAccountType'] . "</td>";
+			//Redirect if button is pressed to delete but carry accross the intUserID via the url
 			echo "<td class='delete-user'>" . "<a href='delete-user-function.php?intUserID=$row[intUserID]'><img title='Delete Quiz' width='35px' height='35px' src='images/icons/trash-icon.png' class='delete-img'>" . "</img></a>" . "</td>";
 	echo "</tr>";
 }

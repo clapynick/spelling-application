@@ -22,12 +22,20 @@ $strUserName = $_SESSION['strUserName'];
 $sql = "SELECT * FROM userdetails WHERE strUserName='$strUserName'";
 $result = $conn->query($sql);
 
+//Find the intUserID
+while($row = $result->fetch_assoc()){
+	$intUserID = $row['intUserID'];
+	global $intUserID;
+}
+
 if($strUserName != null){
 	while($row = $result->fetch_assoc()){
 		if($row["strAccountType"] == 'admin' OR $row["strAccountType"] == 'teacher'){
+			//Redirct an admin or teacher to there homepage
+			header("Location: /teacher-login-page.php");
 			break;
 		} else if($row["strAccountType"] == 'student'){
-			header("Location: /student-login-page.php");
+			//Do nothing if a student is on this page.
 			break;
 		} else {
 			//If a user isn't logged in they will be redirected home
@@ -159,13 +167,18 @@ while($row = $result->fetch_assoc()){
 		text-decoration: underline;
 	}
 	
-	tr:nth-child(even){
-		background-color: white;
+	table.main-table {
+		border: 0px solid;
+		font-size: 20px;
 	}
 	
 	th, td {
 		padding: 8px;
 		width: 170px;
+	}
+	
+	tr:nth-child(even){
+		background-color: white;
 	}
 	
 </style>
@@ -195,8 +208,7 @@ while($row = $result->fetch_assoc()){
 			</div>
 			<ul class="nav navbar-nav pull-right">
 				<li class="active"><a href="student-login-page.php">Home</a></li>
-				<li class="create-quiz"><a onMouseOver="this.style.color='#BDC3C7'" onMouseOut="this.style.color='white'" style="color: white" href="create-quiz.php">Create Quiz</a></li>
-				<li class="sign-out"><a onMouseOver="this.style.color='#BDC3C7'" onMouseOut="this.style.color='white'" style="color: white" href="logOutScript.php">Sign Out</a></li>
+				<li><a onMouseOver="this.style.color='#BDC3C7'" onMouseOut="this.style.color='white'" style="color: white" href="logOutScript.php">Sign Out</a></li>
 			</ul>
 		</div>
 	</nav>
@@ -204,6 +216,7 @@ while($row = $result->fetch_assoc()){
 
 <center>
 <?php
+include 'mysql-connection.php';
 
 echo "<br/>";
 echo "<hr style='width:80%'>";
@@ -211,45 +224,37 @@ echo "<p class='strQuizName'>" . "Results For: " . $strQuizName . "</p>" . "<p c
 echo "<hr style='width:80%'>";
 echo "<br/>";
 
-echo "<table class='main-table' style='width:65%'>";
+echo "<table class='main-table'>";
 	echo "<tr>";
-		echo "<th style='color=black'>" . "UserID" . "</th>";
-		echo "<th style='color=black'>" . "UserName" . "</th>";;
-		echo "<th style='color=black'>" . "Score /15". "</th>";
+		echo "<th style='color=black'>" . "Question" . "</th>";
+		echo "<th style='color=black'>" . "Your Answer" . "</th>";
+		echo "<th style='color=black'>" . "Correct Answer" . "</th>";
 	echo "</tr>";
+
 	
-	$sql = "SELECT * FROM userquizzes WHERE intQuizID=$intQuizID";
-	$result = $conn->query($sql);
-	
+$sql = "SELECT * FROM userquizzes WHERE intQuizID='$intQuizID' AND intUserID='$intUserID'";
+$result = $conn->query($sql);
 while($row = $result->fetch_assoc()){
-	$intUserID = $row['intUserID'];
-	
-	$sql2 = "SELECT * FROM userdetails WHERE intUserID='$intUserID'";
-	$result2 = $conn->query($sql2);
-	while($row_2 = $result2->fetch_assoc()){
-		$strUserName = $row_2['strUserName'];
-		
-		echo "<tr>";
-		echo "<td>" . $intUserID . "</td>";
-		echo "<td>" . $strUserName . "</td>";
-		
-		//This will do the scores on the side out of 15 for completed quizzes
-		$sql3 = "SELECT * FROM userquizzes WHERE intQuizID='$intQuizID' AND intUserID='$intUserID'";
-		$result3 = $conn->query($sql3);
-		while($row_3 = $result3->fetch_assoc()){
-			$j = 0;	
-			for($i = 1; $i < 16; $i++){
-				if($row_3['intQuestion' . $i] == "1"){
-					$j++;
-				}
+	for($i = 1; $i < 16; $i++){
+		$yourAnswer = $row['strQuestion' . $i];
+		echo "<tr>";		
+			echo "<td>" . "Question$i" . "</td>";
+			echo "<td>" . $yourAnswer . "</td>";
+
+			$sql2 = "SELECT * FROM quizdetails WHERE intQuizID='$intQuizID'";
+			$result2 = $conn->query($sql2);
+			while($row_2 = $result2->fetch_assoc()){
+				$correctAnswer = $row_2['strQuestion' . $i . '_r'];
+				echo "<td>" . $correctAnswer . "</td>";
 			}
-			echo "<td>" . $j . "/15" . "</td>";
-		}
-	echo "</tr>";
+		echo "</tr>";
 	}
 }
 
+
 echo "</table>";
+echo "<br />";
+echo "<br />";
 ?>
 </center>
 

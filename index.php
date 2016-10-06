@@ -44,6 +44,7 @@ function checkDetails($conn) {
 				$strUserName = $row['strUserName'];
 				$intUserID = $row['intUserID'];
 				$_SESSION['intUserID'] = $intUserID;
+				//Query the database for userdetails table and where variable username is qeual to strUserName
 				$sql = "SELECT * FROM userdetails WHERE strUserName='$username'";
 				$result = $conn->query($sql);
 				$_SESSION['strUserName'] = $strUserName;
@@ -301,6 +302,7 @@ if(isset($_POST['submit'])){
 	
 	<div class="error-code">
 		<p><?PHP
+		//if the submit button has been pressed see if th error text from the session will be displayed
 		if($_POST){
 			if(isset($_POST['submit'])){
 				if ($_SESSION['error'] == true){

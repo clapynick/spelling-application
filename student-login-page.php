@@ -25,9 +25,11 @@ global $intUserID;
 $strUserName = $_SESSION['strUserName'];
 $sql = "SELECT * FROM userdetails WHERE strUserName='$strUserName'";
 $result = $conn->query($sql);
-
+//If the username exsists than continue, if it equals null go into the else statement and redirect to the login page
 if($strUserName != null){
+	//Fetch the associated data
 	while($row = $result->fetch_assoc()){
+		//
 		if($row["strAccountType"] == 'admin'){
 			header("Location: /admin-login-page.php");
 		} else if($row["strAccountType"] == 'teacher'){
@@ -188,6 +190,14 @@ if($strUserName != null){
 		border: 2px dotted white;
 	}
 	
+	a.quiz-result-button:hover {
+		color: grey;
+	}
+	
+	a.quiz-result-button {
+		color: black;
+	}
+	
 </style>
 
 </head>
@@ -264,14 +274,12 @@ while($row = $result->fetch_assoc()){
 					$j++;
 				}
 			}
-			echo "<td>" . $j . "/15" . "</td>";
+			echo "<td><a class='quiz-result-button' href='student-quiz-results.php?intQuizID=$row[intQuizID]'>" . $j . "/15" . "</a></td>";
 		}
 		
 		if($num_rows <= 0){
 			echo "<td>" . "N/A" . "</td>";
 		}
-		
-		
 	echo "</tr>";
 }
 echo "</table>";

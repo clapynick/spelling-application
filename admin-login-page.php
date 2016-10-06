@@ -21,16 +21,22 @@ $strUserName = $_SESSION['strUserName'];
 $sql = "SELECT * FROM userdetails WHERE strUserName='$strUserName'";
 $result = $conn->query($sql);
 
+//If the username exsists than continue, if it equals null go into the else statement and redirect to the login page
 if($strUserName != null){
+	//Fetch the associated data
 	while($row = $result->fetch_assoc()){
+		//If the account type is admin do nothing
 		if($row["strAccountType"] == 'admin'){
 			break;
+		//If the account type is teacher redirect to the teacher landing page
 		} else if($row["strAccountType"] == 'teacher'){
 			header("Location: /teacher-login-page.php");
 			break;
+		//If the account type is student than redirect to the student landing page
 		} else if($row["strAccountType"] == 'student'){
 			header("Location: /student-login-page.php");
 			break;
+		//If no account type exsists than redirect to home page
 		} else {
 			header("Location: /index.php");
 		}
@@ -45,28 +51,36 @@ function generateCode(){
 	include 'mysql-connection.php';
 	
 	//Define Variables
+	//A query to select all data from table Code Gen
 	$sql = "SELECT * FROM codegen";
 	$result = $conn->query($sql);
 	$row = mysqli_fetch_assoc($result);
+	//A random number between 100000 - 999999
 	$numberA = rand(100000, 999999);
 	echo("$numberA : Current numberA <br />");
+	//Get the intGenCode and assign it to $numberB
 	$numberB = $row['intGenCode'];
 	echo($numberB);
 	echo " : Current numberB <br />";
 
-	while($numberA == $numberB){
+	//While the $numberA is equal to $numberB 
+	while($numberA == $numberB){ //As soon as the number isnt equal it means that its a unique number and can set it to be $numberA
 		$numberA = rand(100000, 999999);
 		echo("$numberA : New Selected numberA");
 	} 
 	
+	//As soon as the numbers aren't equal this part of the code is executed
 	if($numberA != $numberB){
 		$sql2 = "DELETE FROM codegen WHERE intGenCode";
+		//Query a delete function for MySQL databse
 		if ($conn->query($sql2) === TRUE) {
+			//if successful display this.
 			echo "<br /> Record deleted successfully <br />";
 		} else {
+			//if unsuccessful display this.
 			echo "<br /> Error deleting record <br />";
 		}
-		
+		//Make the query that inserts the new code into the correct table in the database with the $numberA variable.
 		$sql3 = "INSERT INTO codegen VALUES ('$numberA')";
 		if ($conn->query($sql3) === TRUE) {
 			echo "New record created successfully <br />";
@@ -257,6 +271,10 @@ if($_GET){
 		border: 2px dotted white;
 	}
 	
+	td.quiz-results:hover, td.delete-quiz:hover {
+		opacity: 0.6;
+	}
+	
 	
 	
 </style>
@@ -289,7 +307,7 @@ if($_GET){
 				<li><a onMouseOver="this.style.color='#BDC3C7'" onMouseOut="this.style.color='white'" style="color: white" href="create-quiz.php">Create Quiz</a></li>
 				<li><a onMouseOver="this.style.color='#BDC3C7'" onMouseOut="this.style.color='white'" style="color: white" href="admin-create-user.php">Create User</a></li>
 				<li><a onMouseOver="this.style.color='#BDC3C7'" onMouseOut="this.style.color='white'" style="color: white" href="admin-delete-user.php">Delete User</a></li>
-				<li><a onMouseOver="this.style.color='#BDC3C7'" onMouseOut="this.style.color='white'" style="color: white" href="admin-edit-user.php">Edit User</a></li>
+				<!--<li><a onMouseOver="this.style.color='#BDC3C7'" onMouseOut="this.style.color='white'" style="color: white" href="admin-edit-user.php">Edit User</a></li>-->
 				<li><a onMouseOver="this.style.color='#BDC3C7'" onMouseOut="this.style.color='white'" style="color: white" href="logOutScript.php">Sign Out</a></li>
 			</ul>
 		</div>
@@ -331,7 +349,7 @@ echo "<table class='main-table' style='width:65%'>";
 	
 while($row = $result->fetch_assoc()){
 	echo "<tr>";
-			echo "<td>" . "<a href='generated-quiz-view.php?intQuizID=$row[intQuizID]'><button class='quiz-button'>" . $row['strQuizName'] . "</button></a>" . "</td>";
+			echo "<td>" . "<a href='teacher-preview-quiz.php?intQuizID=$row[intQuizID]'><button class='quiz-button'>" . $row['strQuizName'] . "</button></a>" . "</td>";
 			echo "<td>" . $row['strTeachersName'] . "</td>";
 			echo "<td class='quiz-results'>" . "<a href='teacher-quiz-results.php?intQuizID=$row[intQuizID]'><img title='Quiz Results' width='35px' height='35px' src='images/icons/results-icon.png' class='delete-img'>" . "</img></a>" . "</td>";
 			echo "<td class='delete-quiz'>" . "<a href='delete-quiz.php?intQuizID=$row[intQuizID]'><img title='Delete Quiz' width='35px' height='35px' src='images/icons/trash-icon.png' class='delete-img'>" . "</img></a>" . "</td>";

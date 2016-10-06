@@ -18,17 +18,22 @@ session_start();
 $strUserName = $_SESSION['strUserName'];
 $sql = "SELECT * FROM userdetails WHERE strUserName='$strUserName'";
 $result = $conn->query($sql);
-
+//If the username exsists than continue, if it equals null go into the else statement and redirect to the login page
 if($strUserName != null){
+	//Fetch the associated data
 	while($row = $result->fetch_assoc()){
+		//if the account type is admin do nothing
 		if($row["strAccountType"] == 'admin'){
 			break;
+		//if the account type is teacher redirect to teacher landing page
 		} else if($row["strAccountType"] == 'teacher'){
 			header("Location: /teacher-login-page.php");
 			break;
+		//if the account type is student redirect to the student landing page
 		} else if($row["strAccountType"] == 'student'){
 			header("Location: /student-login-page.php");
 			break;
+		//If no account type exsists than redirect to home page
 		} else {
 			header("Location: /index.php");
 		}
@@ -76,6 +81,7 @@ if(isset($_GET['intUserID'])){
 if(isset($_POST['yes'])){
 	$intUserID = $_GET['intUserID'];
 	deleteQuizConfirm($conn);
+//If it's no that is pressed redirct to admin-delete-user.php
 } else if(isset($_POST['no'])){
 	header ('Location: /admin-delete-user.php');
 }

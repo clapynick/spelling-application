@@ -22,15 +22,21 @@ $strUserName = $_SESSION['strUserName'];
 $sql = "SELECT * FROM userdetails WHERE strUserName='$strUserName'";
 $result = $conn->query($sql);
 
+//If the username exsists than continue, if it equals null go into the else statement and redirect to the login page
 if($strUserName != null){
+	//Fetch the associated data
 	while($row = $result->fetch_assoc()){
+		//If the account type is admin do nothing
 		if($row["strAccountType"] == 'admin'){
 			break;
+		//If the account type is teacher do nothing
 		} else if($row["strAccountType"] == 'teacher'){
 			break;
+		//If the account type is student redirect to the student landing page
 		} else if($row["strAccountType"] == 'student'){
 			header("Location: /student-login-page.php");
 			break;
+		//If there is no account type redirect to login page
 		} else {
 			header("Location: /index.php");
 		}
@@ -39,34 +45,41 @@ if($strUserName != null){
 	header("Location: /index.php");
 }
 
-
 //Function for creating the code associated with signing up
 function generateCode(){
 	include 'mysql-connection.php';
 	
 	//Define Variables
+	//A query to select all data from table Code Gen
 	$sql = "SELECT * FROM codegen";
 	$result = $conn->query($sql);
 	$row = mysqli_fetch_assoc($result);
+	//A random number between 100000 - 999999
 	$numberA = rand(100000, 999999);
 	echo("$numberA : Current numberA <br />");
+	//Get the intGenCode and assign it to $numberB
 	$numberB = $row['intGenCode'];
 	echo($numberB);
 	echo " : Current numberB <br />";
 
-	while($numberA == $numberB){
+	//While the $numberA is equal to $numberB 
+	while($numberA == $numberB){ //As soon as the number isnt equal it means that its a unique number and can set it to be $numberA
 		$numberA = rand(100000, 999999);
 		echo("$numberA : New Selected numberA");
 	} 
 	
+	//As soon as the numbers aren't equal this part of the code is executed
 	if($numberA != $numberB){
 		$sql2 = "DELETE FROM codegen WHERE intGenCode";
+		//Query a delete function for MySQL databse
 		if ($conn->query($sql2) === TRUE) {
+			//if successful display this.
 			echo "<br /> Record deleted successfully <br />";
 		} else {
+			//if unsuccessful display this.
 			echo "<br /> Error deleting record <br />";
 		}
-		
+		//Make the query that inserts the new code into the correct table in the database with the $numberA variable.
 		$sql3 = "INSERT INTO codegen VALUES ('$numberA')";
 		if ($conn->query($sql3) === TRUE) {
 			echo "New record created successfully <br />";
@@ -96,6 +109,7 @@ function createQuiz($conn){
 	$success_text = "";
 	global $success, $success_text;
 	
+	//Define all variables to be that of the submitted numbers but create a intQuizID between 10000 and 99999
 	$intQuizID = rand(10000, 99999);
 	$strQuizName = $_POST['strQuizName'];
 	$strTeachersName = $_POST['strTeachersName'];
@@ -160,6 +174,7 @@ function createQuiz($conn){
 	$strQuestion15_w1 = $_POST['strQuestion15_w1'];
 	$strQuestion15_w2 = $_POST['strQuestion15_w2'];
 	
+	//Insert this data into the quizdetails quiz
 	$sql = "INSERT INTO quizdetails (intQuizID, strQuizName, strTeachersName, strQuestion1_r, strQuestion1_w1, strQuestion1_w2, strQuestion2_r, strQuestion2_w1, strQuestion2_w2, strQuestion3_r, strQuestion3_w1, strQuestion3_w2, strQuestion4_r, strQuestion4_w1, strQuestion4_w2, strQuestion5_r, strQuestion5_w1, strQuestion5_w2, strQuestion6_r, strQuestion6_w1, strQuestion6_w2, strQuestion7_r, strQuestion7_w1, strQuestion7_w2, strQuestion8_r, strQuestion8_w1, strQuestion8_w2, strQuestion9_r, strQuestion9_w1, strQuestion9_w2, strQuestion10_r, strQuestion10_w1, strQuestion10_w2, strQuestion11_r, strQuestion11_w1, strQuestion11_w2, strQuestion12_r, strQuestion12_w1, strQuestion12_w2, strQuestion13_r, strQuestion13_w1, strQuestion13_w2, strQuestion14_r, strQuestion14_w1, strQuestion14_w2, strQuestion15_r, strQuestion15_w1, strQuestion15_w2)
 	VALUES ('$intQuizID', '$strQuizName', '$strTeachersName', '$strQuestion1_r', '$strQuestion1_w1', '$strQuestion1_w2', '$strQuestion2_r', '$strQuestion2_w1', '$strQuestion2_w2', '$strQuestion3_r', '$strQuestion3_w1', '$strQuestion3_w2', '$strQuestion4_r', '$strQuestion4_w1', '$strQuestion4_w2', '$strQuestion5_r', '$strQuestion5_w1', '$strQuestion5_w2', '$strQuestion6_r', '$strQuestion6_w1', '$strQuestion6_w2', '$strQuestion7_r', '$strQuestion7_w1', '$strQuestion7_w2', '$strQuestion8_r', '$strQuestion8_w1', '$strQuestion8_w2', '$strQuestion9_r', '$strQuestion9_w1', '$strQuestion9_w2', '$strQuestion10_r', '$strQuestion10_w1', '$strQuestion10_w2', '$strQuestion11_r', '$strQuestion11_w1', '$strQuestion11_w2', '$strQuestion12_r', '$strQuestion12_w1', '$strQuestion12_w2', '$strQuestion13_r', '$strQuestion13_w1', '$strQuestion13_w2', '$strQuestion14_r', '$strQuestion14_w1', '$strQuestion14_w2', '$strQuestion15_r', '$strQuestion15_w1', '$strQuestion15_w2')";
 	
@@ -412,6 +427,7 @@ if($_POST){
 		<h1>Create a Quiz</h1>
 		<br />
 		<p class="success"><?PHP
+		//Submit text once and if button has been pressed
 		if($_POST){
 			if(isset($_POST['submit'])){
 				if ($success == true){

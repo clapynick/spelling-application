@@ -94,7 +94,7 @@ CREATE TABLE `userdetails` (
 --
 
 INSERT INTO `userdetails` (`intUserID`, `strUserName`, `strPass`, `strAccountType`) VALUES
-(0, 'TegonBen', 'Donkey42', 'admin');
+(1111, 'TegonBen', 'Donkey42', 'admin');
 
 -- --------------------------------------------------------
 

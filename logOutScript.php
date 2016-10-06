@@ -18,11 +18,13 @@ session_start();
 
 //Function to logout.
 function signOut(){
+	//destroys and unsets all sessions and then redirects to login page.
 	session_unset();
 	session_destroy();
 	header("Location: /index.php");
 }
 
+//call the signOut function upon file being called.
 signOut();
 
 ?>

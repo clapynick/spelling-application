@@ -18,14 +18,18 @@ session_start();
 $strUserName = $_SESSION['strUserName'];
 $sql = "SELECT * FROM userdetails WHERE strUserName='$strUserName'";
 $result = $conn->query($sql);
-
+//If the username exsists than continue, if it equals null go into the else statement and redirect to the login page
 if($strUserName != null){
+	//Fetch the associated data
 	while($row = $result->fetch_assoc()){
+		//If the account type equals admin or teacher then redirect to teacher landing page.
 		if($row["strAccountType"] == 'admin' OR $row["strAccountType"] == 'teacher'){
 			header("Location: /teacher-login-page.php");
 			break;
+		//If the account type equals student do nothing
 		} else if($row["strAccountType"] == 'student'){
 			break;
+		//If no account type exsists than redirect to home page
 		} else {
 			header("Location: /index.php");
 		}
@@ -34,7 +38,7 @@ if($strUserName != null){
 	header("Location: /index.php");
 }
 
-
+//If the home button is pressed redirect to the student landing page
 if(isset($_POST['home'])){
 	header("Location: /student-login-page.php");
 }

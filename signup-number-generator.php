@@ -14,32 +14,41 @@
 // Include Statements to easily call files
 include 'mysql-connection.php';
 
+//Function for creating the code associated with signing up
 function generateCode(){
 	include 'mysql-connection.php';
 	
 	//Define Variables
+	//A query to select all data from table Code Gen
 	$sql = "SELECT * FROM codegen";
 	$result = $conn->query($sql);
 	$row = mysqli_fetch_assoc($result);
+	//A random number between 100000 - 999999
 	$numberA = rand(100000, 999999);
 	echo("$numberA : Current numberA <br />");
+	//Get the intGenCode and assign it to $numberB
 	$numberB = $row['intGenCode'];
 	echo($numberB);
 	echo " : Current numberB <br />";
 
-	while($numberA == $numberB){
+	//While the $numberA is equal to $numberB 
+	while($numberA == $numberB){ //As soon as the number isnt equal it means that its a unique number and can set it to be $numberA
 		$numberA = rand(100000, 999999);
 		echo("$numberA : New Selected numberA");
 	} 
 	
+	//As soon as the numbers aren't equal this part of the code is executed
 	if($numberA != $numberB){
 		$sql2 = "DELETE FROM codegen WHERE intGenCode";
+		//Query a delete function for MySQL databse
 		if ($conn->query($sql2) === TRUE) {
+			//if successful display this.
 			echo "<br /> Record deleted successfully <br />";
 		} else {
+			//if unsuccessful display this.
 			echo "<br /> Error deleting record <br />";
 		}
-		
+		//Make the query that inserts the new code into the correct table in the database with the $numberA variable.
 		$sql3 = "INSERT INTO codegen VALUES ('$numberA')";
 		if ($conn->query($sql3) === TRUE) {
 			echo "New record created successfully <br />";
@@ -48,7 +57,6 @@ function generateCode(){
 		}
 	}
 }
-
 
 if($_GET){
     if(isset($_GET['gencode'])){

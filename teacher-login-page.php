@@ -21,7 +21,7 @@ session_start();
 $strUserName = $_SESSION['strUserName'];
 $sql = "SELECT * FROM userdetails WHERE strUserName='$strUserName'";
 $result = $conn->query($sql);
-
+//If the username exsists than continue, if it equals null go into the else statement and redirect to the login page
 if($strUserName != null){
 	while($row = $result->fetch_assoc()){
 		if($row["strAccountType"] == 'admin'){
@@ -259,6 +259,10 @@ if($_GET){
 		border: 2px dotted white;
 	}
 	
+	td.quiz-results:hover, td.delete-quiz:hover {
+		opacity: 0.6;
+	}
+	
 	
 </style>
 
@@ -329,9 +333,9 @@ echo "<table class='main-table' style='width:65%'>";
 	
 while($row = $result->fetch_assoc()){
 	echo "<tr>";
-			echo "<td>" . "<a href='generated-quiz-view.php?intQuizID=$row[intQuizID]'><button class='quiz-button'>" . $row['strQuizName'] . "</button></a>" . "</td>";
+			echo "<td>" . "<a href='teacher-preview-quiz.php?intQuizID=$row[intQuizID]'><button class='quiz-button'>" . $row['strQuizName'] . "</button></a>" . "</td>";
 			echo "<td>" . $row['strTeachersName'] . "</td>";
-			echo "<td class='quiz-results'>" . "<a href='delete-quiz.php?intQuizID=$row[intQuizID]'><img title='Quiz Results' width='35px' height='35px' src='images/icons/results-icon.png' class='delete-img'>" . "</img></a>" . "</td>";
+			echo "<td class='quiz-results'>" . "<a href='teacher-quiz-results.php?intQuizID=$row[intQuizID]'><img title='Quiz Results' width='35px' height='35px' src='images/icons/results-icon.png' class='delete-img'>" . "</img></a>" . "</td>";
 			echo "<td class='delete-quiz'>" . "<a href='delete-quiz.php?intQuizID=$row[intQuizID]'><img title='Delete Quiz' width='35px' height='35px' src='images/icons/trash-icon.png' class='delete-img'>" . "</img></a>" . "</td>";
 	echo "</tr>";
 }

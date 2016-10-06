@@ -21,20 +21,27 @@ $strUserName = $_SESSION['strUserName'];
 $sql = "SELECT * FROM userdetails WHERE strUserName='$strUserName'";
 $result = $conn->query($sql);
 
+//If there is a username found enter the if statement
 if($strUserName != null){
+	//Get the associated data from the row
 	while($row = $result->fetch_assoc()){
+		//If the row['strAccountType'] is equal to admin do nothing
 		if($row["strAccountType"] == 'admin'){
 			break;
+		//If the row['strAccountType'] is equal to teacher redirect the user to the teacher landing page.
 		} else if($row["strAccountType"] == 'teacher'){
 			header("Location: /teacher-login-page.php");
 			break;
+		//If the row['strAccountType'] is equal to student redirect to the student landing page.
 		} else if($row["strAccountType"] == 'student'){
 			header("Location: /student-login-page.php");
 			break;
+		//If no account type is found the user doesnt exsist so its not a real login done.
 		} else {
 			header("Location: /index.php");
 		}
 	}
+//If no username is found therefore someone is not logged in redirect them to the login page.
 } else {
 	header("Location: /index.php");
 }
@@ -45,28 +52,36 @@ function generateCode(){
 	include 'mysql-connection.php';
 	
 	//Define Variables
+	//A query to select all data from table Code Gen
 	$sql = "SELECT * FROM codegen";
 	$result = $conn->query($sql);
 	$row = mysqli_fetch_assoc($result);
+	//A random number between 100000 - 999999
 	$numberA = rand(100000, 999999);
 	echo("$numberA : Current numberA <br />");
+	//Get the intGenCode and assign it to $numberB
 	$numberB = $row['intGenCode'];
 	echo($numberB);
 	echo " : Current numberB <br />";
 
-	while($numberA == $numberB){
+	//While the $numberA is equal to $numberB 
+	while($numberA == $numberB){ //As soon as the number isnt equal it means that its a unique number and can set it to be $numberA
 		$numberA = rand(100000, 999999);
 		echo("$numberA : New Selected numberA");
 	} 
 	
+	//As soon as the numbers aren't equal this part of the code is executed
 	if($numberA != $numberB){
 		$sql2 = "DELETE FROM codegen WHERE intGenCode";
+		//Query a delete function for MySQL databse
 		if ($conn->query($sql2) === TRUE) {
+			//if successful display this.
 			echo "<br /> Record deleted successfully <br />";
 		} else {
+			//if unsuccessful display this.
 			echo "<br /> Error deleting record <br />";
 		}
-		
+		//Make the query that inserts the new code into the correct table in the database with the $numberA variable.
 		$sql3 = "INSERT INTO codegen VALUES ('$numberA')";
 		if ($conn->query($sql3) === TRUE) {
 			echo "New record created successfully <br />";
@@ -78,35 +93,58 @@ function generateCode(){
 
 //Function for creating a user when logged into admin
 function createUser(){
+	//Get the mysql database information by including the mysql file
 	include 'mysql-connection.php';
 	
+	//Get the username from the form 
 	$username = $_POST['username'];
+	//Get the password from the form
 	$pass = $_POST['pass'];
+	//The second password part is set to a variable from the form	
 	$passConfirm = $_POST['passConfirm'];
+	//get the account type that was submitted from the form
 	$strAccountType = $_POST['account-type-select'];
+	//Completion or success value set to false as it has not been completed
 	$success = false;
+	//No succession yet so there is the success_text is set to nothing.
 	$success_text = "";
+	//Globally define these variable to be accessed accross the entire file.
 	global $success, $success_text;
 	
+	//Query the database table codegen for intGenCode
 	$sql = "SELECT * FROM codegen WHERE intGenCode";
 	$result = $conn->query($sql);
+	//Get associated data from that row
 	$row = $result->fetch_assoc();
 	$error = false;
 	
+	//if the strAccount type is not equal to select one, continue
 	if ($strAccountType != "select-one"){
+		//Query userdetails table from the database for the row that the strUserName is equal to the $username variable
 		$sql = "SELECT * FROM userdetails WHERE strUserName='$username'";
 		$result = $conn->query($sql);
+		//Get associated data for that row
 		$row = $result->fetch_assoc();
+		//If the $username variable is NOT equal to the queried strUserName then continue
 		if ($username != $row['strUserName']){
+			//Find the length of the $pass variable
 			$lengthPass = strlen("$pass");
+			//If the length of the password is less than 17 and the length of the password is greater than 5 continue
 			if ($lengthPass < 17 && $lengthPass > 5){
+				//Get the length of the username and assign it to a variable
 				$lengthUser = strlen("$username");
+				//if the length of the string is less than 17 and greater than 5 continue
 				if ($lengthUser < 17 && $lengthUser > 5){
+					//If the password entered is equal to the confirmed password entered, continue
 					if($pass == $passConfirm){
+						//Define intUserID to a random number between 1000 and 9999
 						$intUserID = rand(1000, 9999);
+						//Query the database for userdetails where intUserID is equal to the intUserID quesiton
 						$sql = "SELECT * FROM userdetails WHERE intUserID='$intUserID'";
 						$result = $conn->query($sql);
+						//Fetch the associated data of the query
 						$row = $result->fetch_assoc();
+						//If the intUserID is not equal to the row of the assocated data intUserID
 						if ($intUserID != $row['intUserID']){
 							//Input all details into the database to create a new user since all fields have been checked
 							$sql = "INSERT INTO userdetails (strUserName, strPass, intUserID, strAccountType)
@@ -119,6 +157,7 @@ function createUser(){
 								$error_text = "Error: Creating an account, please contact a teacher or administrator.";
 							}
 						} else {
+							//Find a new intUserID until one is found that doesnt exsist
 							while ($intUserID == $row['intUserID']){
 								$intUserID = rand(1000, 9999);
 							}
@@ -128,32 +167,40 @@ function createUser(){
 							VALUES ('$username', '$pass', '$intUserID', '$strAccountType')";
 							if ($conn->query($sql) === TRUE) {
 								$success = true;
+								//If its successfull set this to success text.
 								$success_text = "Congratulations! You have successfully created an account";
 							} else {
 								$error = true;
+								//If its unsuccessful set this to error_text
 								$error_text = "Error: Creating an account, please contact a teacher or administrator.";
 							}
 						}
 					} else {
+						//Error message displayed on account of incorrect validation of passwords
 						$error = true;
 						$error_text = "Error: Passwords do not match";
 					}
 				} else {
+					//Error message displayed on account of incorrect validation of usernames
 					$error = true;
 					$error_text = "Error: Please keep your username within 6-16 characters";
 				}
 			} else {
+				//Error message displayed on account of incorrect validation of usernames
 				$error = true;
 				$error_text = "Error: Please keep your password within 6-16 characters";
 			}
 		} else {
+			//Error message displayed on account of incorrect validation of usernames
 			$error = true;
 			$error_text = "Error: The username you entered is taken";
 		}
 	} else {
+		//Error message displayed on account of incorrect validation of account type
 		$error = true;
 		$error_text = "Error: Please Select an Account Type";
 	}
+	//Create a session holiding the error values to be accessed further down the file
 	$_SESSION['error'] = $error;
 	if ($error == true){
 		$_SESSION['error_text'] = $error_text;
@@ -432,7 +479,7 @@ if($_POST){
 				<li><a onMouseOver="this.style.color='#BDC3C7'" onMouseOut="this.style.color='white'" style="color: white" href="create-quiz.php">Create Quiz</a></li>
 				<li class="active"><a onMouseOut="this.style.color='white'" style="color: white" href="admin-create-user.php">Create User</a></li>
 				<li><a onMouseOver="this.style.color='#BDC3C7'" onMouseOut="this.style.color='white'" style="color: white" href="admin-delete-user.php">Delete User</a></li>
-				<li><a onMouseOver="this.style.color='#BDC3C7'" onMouseOut="this.style.color='white'" style="color: white" href="admin-edit-user.php">Edit User</a></li>
+				<!--<li><a onMouseOver="this.style.color='#BDC3C7'" onMouseOut="this.style.color='white'" style="color: white" href="admin-edit-user.php">Edit User</a></li>-->
 				<li><a onMouseOver="this.style.color='#BDC3C7'" onMouseOut="this.style.color='white'" style="color: white" href="logOutScript.php">Sign Out</a></li>
 			</ul>
 		</div>
@@ -443,14 +490,17 @@ if($_POST){
 	<form>
 		<input type="submit" name="gencode" class="btn btn-lg btn-default" value="Generate New Code"/>
 		<p><?PHP 
+			//Query the database for all the data in codegen table
 			$sql = "SELECT * FROM codegen";
 			$result = $conn->query($sql);
+			//If any data is found go through this if statement
 			if ($result->num_rows > 0) {
 				// output data of each row
 				while($row = $result->fetch_assoc()) {
 					echo "Code: " . $row["intGenCode"] . "<br>";
 				}
 			} else {
+				//if there is no data found display nothing
 				echo "";
 			}
 			$numberC = $row;
@@ -468,8 +518,11 @@ if($_POST){
 		<!-- Display the code by getting the error set in the session of the function -->
 		<div class="error-code">
 			<p><?PHP
+			//Error code thats displayed
 			if($_POST){
+				//Check that submit button has been pressed
 				if(isset($_POST['submit'])){
+					//Find the session variable error and see if its true
 					if ($_SESSION['error'] == true){
 						echo "*" . $_SESSION['error_text'] . "*";
 					}
@@ -477,8 +530,11 @@ if($_POST){
 			}	
 			?><p>
 			<p class="success"><?PHP
+			//Success code that is displayed
 			if($_POST){
+				//Check that submit button has been pressed
 				if(isset($_POST['submit'])){
+					//If the process is successful $cuccess will = true and therefore display success_text.
 					if ($success == true){
 						echo "*" . $success_text . "*";
 					}
