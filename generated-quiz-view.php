@@ -76,21 +76,17 @@ function checkResults(){
 				$intQuestion = "intQuestion$i";
 				$strQuestion = "strQuestion$i";
 				$yes = "1";
-				$sql = "UPDATE userquizzes SET $intQuestion='$yes', $strQuestion='$studentAns' WHERE intQuizID='$intQuizID'";
-				if ($conn->query($sql) === TRUE) {
-					echo "";
-				} else {
-					echo "";
+				$sql = "UPDATE userquizzes SET $intQuestion='$yes', $strQuestion='$studentAns' WHERE intQuizID='$intQuizID' AND intUserID='$intUserID'";
+				if (!$conn->query($sql)) {
+					echo "<strong>An error occured - Sorry, please try again later!</strong>";
 				}
 			} else {
 				$intQuestion = "intQuestion$i";
 				$strQuestion = "strQuestion$i";
 				$no = "0";
 				$sql = "UPDATE userquizzes SET $intQuestion='$no', $strQuestion='$studentAns' WHERE intQuizID='$intQuizID'";
-				if ($conn->query($sql) === TRUE) {
-					echo "";
-				} else {
-					echo "";
+				if (!$conn->query($sql)) {
+					echo "<strong>An error occured - Sorry, please try again later!</strong>";
 				}
 			}
 		}
@@ -100,7 +96,7 @@ function checkResults(){
 if($_POST){
     if(isset($_POST['submit'])){
         checkResults();
-		header("Location: /completed-quiz.php");
+	header("Location: /completed-quiz.php");
     }
 }
 
